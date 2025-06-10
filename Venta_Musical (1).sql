@@ -1,8 +1,9 @@
+----************************************ CREACION BD ************************************
 --CREATE DATABASE VentaMusical;
---GO;
+--GO
 
 --USE VentaMusical;
---GO;
+--GO
 
 --CREATE TABLE Usuarios(
 --	ID						INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
@@ -17,13 +18,13 @@
 --	Contrasena				VARCHAR(30) NOT NULL,
 --	Perfil					NVARCHAR(25)  NOT NULL
 --);
---GO;
+--GO
 
 --CREATE TABLE Generos(
 --	CodigoGenero		INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 --	Descripcion			VARCHAR(100) NOT NULL
 --);
---GO;
+--GO
 
 --CREATE TABLE ARTISTAS(
 --	CodigoArtista		INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
@@ -34,7 +35,7 @@
 --	Foto				VARCHAR(100)NOT NULL,
 --	LinkBiografia		VARCHAR(MAX)NOT NULL,
 --);
---GO;
+--GO
 
 --CREATE TABLE Albumes(
 --	CodigoAlbum		INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
@@ -44,7 +45,7 @@
 --	Imagen			VARCHAR(150)NOT NULL,
 --	FOREIGN KEY (CodigoArtista) REFERENCES Artistas(CodigoArtista) ON DELETE CASCADE
 --);
---GO;
+--GO
 
 --CREATE TABLE Canciones(
 --	CodigoCancion		 INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
@@ -57,7 +58,7 @@
 --	FOREIGN KEY (CodigoGenero) REFERENCES Generos(CodigoGenero),
 --	FOREIGN KEY (CodigoAlbum) REFERENCES Albumes(CodigoAlbum) ON DELETE CASCADE
 --);
---GO;
+--GO
 
 --CREATE TABLE Ventas(
 --    NumeroFactura     INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
@@ -67,7 +68,7 @@
 --    TipoPago          NVARCHAR(25)  NOT NULL,
 --    FOREIGN KEY (IDUsuario) REFERENCES Usuarios(ID) ON DELETE NO ACTION
 --);
---GO;
+--GO
 
 --CREATE TABLE DetalleVenta(
 --	IDDetalle		INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
@@ -77,7 +78,7 @@
 --	FOREIGN KEY (NumeroFactura) REFERENCES Ventas(NumeroFactura),
 --	FOREIGN KEY (CodigoCancion) REFERENCES Canciones(CodigoCancion) 
 --);
---GO;
+--GO
 
 --CREATE TABLE Auditoria(
 --	ID					INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
@@ -89,38 +90,79 @@
 --	Detalles			VARCHAR(100) NOT NULL,
 --	IPUsuario			VARCHAR(35) NOT NULL
 --);
---GO;
+--GO
 
---CREACIÓN DE INDEX ------------;
+---- CREACIÓN DE INDEX ------------;
 
--- Índices para la tabla Usuarios
+---- --Índices para la tabla Usuarios
 --CREATE INDEX IX_Usuarios_NumeroIdentificacion ON Usuarios(NumeroIdentificacion);
 --CREATE INDEX IX_Usuarios_CorreoElectronico ON Usuarios(CorreoElectronico);
 
--- Índices para la tabla Generos
+---- --Índices para la tabla Generos
 --CREATE INDEX IX_Generos_Descripcion ON Generos(Descripcion);
 
--- Índices para la tabla Artistas
+---- --Índices para la tabla Artistas
 --CREATE INDEX IX_Artistas_NombreArtistico ON Artistas(NombreArtistico);
 
--- Índices para la tabla Albumes
+---- --Índices para la tabla Albumes
 --CREATE INDEX IX_Albumes_CodigoArtista ON Albumes(CodigoArtista);
 --CREATE INDEX IX_Albumes_NombreAlbum ON Albumes(NombreAlbum);
 
--- Índices para la tabla Canciones
+---- --Índices para la tabla Canciones
 --CREATE INDEX IX_Canciones_CodigoGenero ON Canciones(CodigoGenero);
 --CREATE INDEX IX_Canciones_CodigoAlbum ON Canciones(CodigoAlbum);
 --CREATE INDEX IX_Canciones_NombreCancion ON Canciones(NombreCancion);
 
--- Índices para la tabla Ventas
+---- --Índices para la tabla Ventas
 --CREATE INDEX IX_Ventas_IDUsuario ON Ventas(IDUsuario);
 --CREATE INDEX IX_Ventas_FechaCompra ON Ventas(FechaCompra);
 
--- Índices para la tabla DetalleVenta
+---- --Índices para la tabla DetalleVenta
 --CREATE INDEX IX_DetalleVenta_NumeroFactura ON DetalleVenta(NumeroFactura);
 --CREATE INDEX IX_DetalleVenta_CodigoCancion ON DetalleVenta(CodigoCancion);
 
--- Índices para la tabla Auditoria
+---- --Índices para la tabla Auditoria
 --CREATE INDEX IX_Auditoria_Usuario ON Auditoria(Usuario);
 --CREATE INDEX IX_Auditoria_FechaRegistro ON Auditoria(FechaRegistro);
 --CREATE INDEX IX_Auditoria_TablaAfectada ON Auditoria(TablaAfectada);
+
+
+----************************************ FIN CREACION BD ************************************
+
+
+
+----****************************** PROCEDIMIENTOS ALMACENADOS ******************************
+
+---- Albumes (Freddy)
+---- Artistas
+
+---- Auditoria (Fabio)
+---- Canciones
+
+---- Detalles (Raquel)
+---- Generos
+
+---- Usuarios (Josue)
+---- Ventas
+
+----****************************** FIN PROCEDIMIENTOS ALMACENADOS *****************************
+
+
+
+----******************************TRIGGER ******************************
+---- Albumes (Freddy)
+---- Artistas
+
+---- Auditoria (Fabio)
+---- Canciones
+
+---- Detalles (Raquel)
+---- Generos
+
+---- Usuarios (Josue)
+---- Ventas
+----****************************** FIN TRIGGER ******************************
+
+
+
+
