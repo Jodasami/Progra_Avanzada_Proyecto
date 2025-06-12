@@ -26,7 +26,7 @@
 --);
 --GO
 
---CREATE TABLE ARTISTAS(
+--CREATE TABLE Artistas(
 --	CodigoArtista		INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 --	NombreArtistico		VARCHAR(100)NOT NULL,
 --	FechaNacimiento		VARCHAR(100)NOT NULL,
@@ -143,7 +143,200 @@
 ---- Generos
 
 ---- Usuarios (Josue)
+
+---- ________________________Agregar Usuario________________________ ----
+CREATE PROCEDURE spAgregarUsuario
+	@NumeroIdentificacion	VARCHAR (30),
+	@Nombre					VARCHAR(30),
+	@Apellido				VARCHAR(50),
+	@Genero					NVARCHAR(10),
+	@CorreoElectronico		VARCHAR(255),
+	@TipoTarjeta			NVARCHAR(25),
+	@DineroDisponible		DECIMAL(10,2),
+	@NumeroTarjeta			VARCHAR(25),
+	@Contrasena				VARCHAR(30),
+	@Perfil					NVARCHAR(25)
+
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        INSERT INTO Usuarios 
+		( NumeroIdentificacion, Nombre, Apellido, Genero, CorreoElectronico, TipoTarjeta,
+		  DineroDisponible, NumeroTarjeta, Contrasena, Perfil )
+
+        VALUES 
+		( @NumeroIdentificacion, @Nombre, @Apellido, @Genero, @CorreoElectronico, @TipoTarjeta,
+		  @DineroDisponible, @NumeroTarjeta, @Contrasena, @Perfil );
+
+        COMMIT;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK;
+        THROW;
+		DECLARE @ErrorMessage NVARCHAR(4000), @ErrorSeverity INT, @ErrorState INT;
+        SELECT 
+            @ErrorMessage = ERROR_MESSAGE(),
+            @ErrorSeverity = ERROR_SEVERITY(),
+            @ErrorState = ERROR_STATE();
+        RAISERROR('Error al agregar al usuario: %s', @ErrorSeverity, @ErrorState, @ErrorMessage)
+    END CATCH
+END
+
+
+---- ________________________Actualizar Usuario________________________ ----
+CREATE PROCEDURE spActualizarUsuario
+    @ID					  INT,
+    @NumeroIdentificacion VARCHAR(30),
+    @Nombre               VARCHAR(30),
+    @Apellido             VARCHAR(50),
+    @Genero               NVARCHAR(10),
+    @CorreoElectronico    VARCHAR(255),
+    @TipoTarjeta          NVARCHAR(25),
+    @DineroDisponible     DECIMAL(10,2),
+    @NumeroTarjeta        VARCHAR(25),
+    @Contrasena           VARCHAR(30),
+    @Perfil               NVARCHAR(25)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        UPDATE Usuarios
+        SET 
+            NumeroIdentificacion = @NumeroIdentificacion,
+            Nombre = @Nombre,
+            Apellido = @Apellido,
+            Genero = @Genero,
+            CorreoElectronico = @CorreoElectronico,
+            TipoTarjeta = @TipoTarjeta,
+            DineroDisponible = @DineroDisponible,
+            NumeroTarjeta = @NumeroTarjeta,
+            Contrasena = @Contrasena,
+            Perfil = @Perfil
+        WHERE 
+            ID = @ID;
+
+        COMMIT;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK;
+
+        DECLARE @ErrorMessage NVARCHAR(4000), @ErrorSeverity INT, @ErrorState INT;
+        SELECT 
+            @ErrorMessage = ERROR_MESSAGE(),
+            @ErrorSeverity = ERROR_SEVERITY(),
+            @ErrorState = ERROR_STATE();
+        RAISERROR('Error al actualizar el usuario: %s', @ErrorSeverity, @ErrorState, @ErrorMessage);
+    END CATCH
+END
+
+
+
+---- ________________________Eliminar Usuario________________________ ----
+CREATE PROCEDURE spEliminarUsuario
+    @Id INT
+AS
+BEGIN
+    DELETE
+    FROM Usuarios
+    WHERE ID = @Id
+END
+
+
+---- ________________________Mostrar Usuarios________________________ ----
+CREATE PROCEDURE spMostrarTodosUsuarios
+   
+AS
+BEGIN
+    SELECT Id, NumeroIdentificacion, Nombre, Apellido, Genero, CorreoElectronico, TipoTarjeta,
+		   DineroDisponible, NumeroTarjeta, Contrasena, Perfil
+    FROM Usuarios
+END
+
+
+
+---- ________________________Mostrar Usuario Por Id________________________ ----
+CREATE PROCEDURE spMostrarUsuariosPorId
+    @Id INT
+AS
+BEGIN
+    SELECT Id, NumeroIdentificacion, Nombre, Apellido, Genero, CorreoElectronico, TipoTarjeta,
+		   DineroDisponible, NumeroTarjeta, Contrasena, Perfil
+    FROM Usuarios
+    WHERE ID = @Id
+END
+
+
+
 ---- Ventas
+
+---- ________________________Agregar Venta________________________ ----
+CREATE PROCEDURE spAgregarVenta
+    @IDUsuario         INT,
+    @FechaCompra       DATETIME,
+    @Total             DECIMAL(10,2),
+    @TipoPago          NVARCHAR(25)
+
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        INSERT INTO Ventas 
+		( IDUsuario, FechaCompra, Total, TipoPago)
+
+        VALUES 
+		( @IDUsuario, @FechaCompra, @Total, @TipoPago );
+
+        COMMIT;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK;
+        THROW;
+		DECLARE @ErrorMessage NVARCHAR(4000), @ErrorSeverity INT, @ErrorState INT;
+        SELECT 
+            @ErrorMessage = ERROR_MESSAGE(),
+            @ErrorSeverity = ERROR_SEVERITY(),
+            @ErrorState = ERROR_STATE();
+        RAISERROR('Error al realizar la venta: %s', @ErrorSeverity, @ErrorState, @ErrorMessage)
+    END CATCH
+END
+
+
+---- ________________________Actualizar Venta________________________ ----
+/* 
+No implementada pues no considero que sea correcto poder actualizar una venta 
+(alterar una factura)
+*/
+
+---- ________________________Eliminar Venta________________________ ----
+/* 
+No implementada pues no considero que sea correcto poder eliminar una venta 
+(alterar una factura)
+*/
+
+---- ________________________Mostrar Ventas________________________ ----
+CREATE PROCEDURE spMostrarVentas
+   
+AS
+BEGIN
+    SELECT NumeroFactura, IDUsuario, FechaCompra, Total, TipoPago
+    FROM Ventas
+END
+
+
+
+---- ________________________Mostrar Venta Por Id________________________ ----
+CREATE PROCEDURE spMostrarVentaPorId
+    @NumeroFactura INT
+AS
+BEGIN
+    SELECT NumeroFactura, IDUsuario, FechaCompra, Total, TipoPago
+    FROM Ventas
+    WHERE NumeroFactura = @NumeroFactura
+END
 
 ----****************************** FIN PROCEDIMIENTOS ALMACENADOS *****************************
 
@@ -160,7 +353,90 @@
 ---- Generos
 
 ---- Usuarios (Josue)
+
+---- ________________________Insert________________________ ----
+CREATE TRIGGER trInsertUsuarios
+ON Usuarios
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO Auditoria (FechaRegistro, Usuario, Accion, TablaAfectada, IDRegistroAfectado, Detalles, IPUsuario)
+    SELECT 
+        GETDATE(),
+        Nombre,
+        'INSERT',
+        'Usuarios',
+        ID,
+        'Nuevo usuario insertado',
+        Perfil
+    FROM inserted;
+END
+
+---- ________________________Update________________________ ----
+CREATE TRIGGER tr_Usuarios_Update
+ON Usuarios
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO Auditoria (FechaRegistro, Usuario, Accion, TablaAfectada, IDRegistroAfectado, Detalles, IPUsuario)
+    SELECT 
+        GETDATE(),
+        i.Nombre,
+        'UPDATE',
+        'Usuarios',
+        i.ID,
+        'Usuario actualizado',
+        i.Perfil
+    FROM inserted i
+    JOIN deleted d ON i.ID = d.ID;
+END
+---- ________________________Delete________________________ ----
+CREATE TRIGGER tr_Usuarios_Delete
+ON Usuarios
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO Auditoria (FechaRegistro, Usuario, Accion, TablaAfectada, IDRegistroAfectado, Detalles, IPUsuario)
+    SELECT 
+        GETDATE(),
+        Nombre,
+        'DELETE',
+        'Usuarios',
+        ID,
+        'Usuario eliminado',
+        Perfil
+    FROM deleted;
+END
+
 ---- Ventas
+
+---- ________________________Insert________________________ ----
+CREATE TRIGGER trInsertVenta
+ON Ventas
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO Auditoria (FechaRegistro, Usuario, Accion, TablaAfectada, IDRegistroAfectado, Detalles, IPUsuario)
+    SELECT 
+        GETDATE(),
+        u.ID,
+        'INSERT',
+        'Ventas',
+        i.NumeroFactura,
+        'Nueva venta registrada',
+        'Sistema de cobros'
+    FROM inserted i
+	INNER JOIN Usuarios u ON u.ID = i.IDUsuario;
+END
+
 ----****************************** FIN TRIGGER ******************************
 
 
