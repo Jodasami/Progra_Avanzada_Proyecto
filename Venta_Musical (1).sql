@@ -495,7 +495,107 @@ No implementada pues no considero que sea correcto poder eliminar una venta
 ---- Canciones
 
 ---- Detalles (Raquel)
+----________________________Insertar________________________----
+
+--CREATE TRIGGER trg_InsertDetalleVenta
+--ON DetalleVenta
+--AFTER INSERT
+--AS
+--BEGIN
+--    INSERT INTO AuditoriaDetalleVenta (NumeroFactura, CodigoCancion, Subtotal, FechaInsert, UsuarioInserto)
+--    SELECT 
+--        i.NumeroFactura,
+--        i.CodigoCancion,
+--        i.Subtotal,
+--        GETDATE(),
+--        SYSTEM_USER
+--    FROM inserted i;
+--END;
+
+----________________________Actualizar________________________----
+
+--CREATE TRIGGER tr_ActualizarTotalVenta_DespuesInsertar
+--ON DetalleVenta
+--AFTER INSERT
+--AS
+--BEGIN
+--    UPDATE v
+--    SET v.Total = (
+--        SELECT SUM(Subtotal)
+--        FROM DetalleVenta dv
+--        WHERE dv.NumeroFactura = v.NumeroFactura
+--    )
+--    FROM Ventas v
+--    JOIN inserted i ON v.NumeroFactura = i.NumeroFactura;
+--END;
+
+
+----________________________Validar SubTotal no sea Menor a cero________________________----
+
+--CREATE TRIGGER tr_ValidarSubtotal_MayorCero
+--ON DetalleVenta
+--INSTEAD OF INSERT
+--AS
+--BEGIN
+--    IF EXISTS (SELECT 1 FROM inserted WHERE Subtotal <= 0)
+--    BEGIN
+--        RAISERROR('El subtotal debe ser mayor a cero.', 16, 1);
+--        ROLLBACK;
+--        RETURN;
+--    END
+
+--    INSERT INTO DetalleVenta (NumeroFactura, CodigoCancion, Subtotal)
+--    SELECT NumeroFactura, CodigoCancion, Subtotal FROM inserted;
+--END;
+
+
+
 ---- Generos
+----________________________No Exista Duplicados________________________----
+
+--CREATE TRIGGER trg_PreventDuplicateGenero
+--ON Generos
+--INSTEAD OF INSERT
+--AS
+--BEGIN
+--    IF EXISTS (
+--        SELECT 1
+--        FROM inserted i
+--        JOIN Generos g ON LOWER(i.Descripcion) = LOWER(g.Descripcion)
+--    )
+--    BEGIN
+--        RAISERROR('Ya existe un género con esa descripción.', 16, 1);
+--        ROLLBACK;
+--        RETURN;
+--    END
+
+--    INSERT INTO Generos (Descripcion)
+--    SELECT Descripcion
+--    FROM inserted;
+--END;
+
+----________________________Eliminar________________________
+
+--CREATE TRIGGER tr_EvitarEliminarGeneroConCanciones
+--ON Generos
+--INSTEAD OF DELETE
+--AS
+--BEGIN
+--    -- Verificar si hay canciones asociadas al género que se intenta eliminar
+--    IF EXISTS (
+--        SELECT 1
+--        FROM deleted d
+--        JOIN Canciones c ON c.CodigoGenero = d.CodigoGenero
+--    )
+--    BEGIN
+--        RAISERROR('No se puede eliminar el género porque está asociado a una o más canciones.', 16, 1);
+--        ROLLBACK;
+--        RETURN;
+--    END
+
+--    DELETE FROM Generos
+--    WHERE CodigoGenero IN (SELECT CodigoGenero FROM deleted);
+--END;
 
 
 ---- Usuarios (Josue)
