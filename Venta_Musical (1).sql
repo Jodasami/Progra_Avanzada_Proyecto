@@ -144,7 +144,7 @@
 
 ---- Usuarios (Josue)
 
----- ________________________Agregar Usuario________________________ ----
+---- ________________________Agregar Usuario________________________ -----
 CREATE PROCEDURE spAgregarUsuario
 	@NumeroIdentificacion	VARCHAR (30),
 	@Nombre					VARCHAR(30),
