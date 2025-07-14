@@ -7,5 +7,6 @@ namespace VentaMusical.Models.ViewModels.Canciones
 {
 	public class EditarCancion : CrearCancion
 	{
-	}
+        public int CodigoCancion { get; set; }
+    }
 }

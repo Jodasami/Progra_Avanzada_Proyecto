@@ -32,7 +32,7 @@ CREATE TABLE Artistas(
 	FechaNacimiento		VARCHAR(100)NOT NULL,
 	NombreReal			VARCHAR(100)NOT NULL,
 	Nacionalidad		VARCHAR(100)NOT NULL,
-	Foto				VARCHAR(100)NOT NULL,
+	Foto				VARCHAR(MAX)NOT NULL,
 	LinkBiografia		VARCHAR(MAX)NOT NULL,
 );
 GO
@@ -42,7 +42,7 @@ CREATE TABLE Albumes(
 	CodigoArtista	INT NOT NULL,
 	NombreAlbum		VARCHAR(150)NOT NULL,
 	AnoLanzamiento	INT NOT NULL,
-	Imagen			VARCHAR(150)NOT NULL,
+	Imagen			VARCHAR(MAX)NOT NULL,
 	FOREIGN KEY (CodigoArtista) REFERENCES Artistas(CodigoArtista) ON DELETE CASCADE
 );
 GO

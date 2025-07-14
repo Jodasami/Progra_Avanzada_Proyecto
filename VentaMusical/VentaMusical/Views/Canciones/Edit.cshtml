@@ -1,7 +1,112 @@
-﻿
+﻿@model VentaMusical.Models.ViewModels.Canciones.EditarCancion
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Editar Cancion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h2>Editar Canción</h2>
+<br />
+<br />
 
+@if (ViewBag.ValorMensaje == 1)
+{
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            onclick="document.location.href='@Url.Content("~/Canciones/Index")'">
+                        &times;
+                    </button>
+                    <h2 class="modal-title">Mensaje</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success">@ViewBag.MensajeProceso</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal"
+                            onclick="document.location.href='@Url.Content("~/Canciones/Index")'">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else if (ViewBag.ValorMensaje == 0)
+{
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+                    <h2 class="modal-title">Mensaje</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger">@ViewBag.MensajeProceso</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("Edit", "Canciones", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.CodigoCancion)
+
+    <div class="row">
+        <div class="col-md-4">
+            <input type="submit" class="btn btn-success w-100 btn-lg" value="Guardar Cambios" />
+            <br /><br />
+            <input type="button" class="btn btn-outline-success w-100 btn-lg" value="Volver"
+                   onclick="document.location.href='@Url.Content("~/Canciones/Index")'" />
+        </div>
+
+        <div class="col-md-8">
+
+            @Html.LabelFor(m => m.CodigoGenero)
+            @Html.DropDownListFor(m => m.CodigoGenero, Model.GenerosDisponibles, "Seleccione un género", new { @class = "form-select" })
+            @Html.ValidationMessageFor(m => m.CodigoGenero)
+            <br />
+
+            @Html.LabelFor(m => m.CodigoAlbum)
+            @Html.DropDownListFor(m => m.CodigoAlbum, Model.AlbumesDisponibles, "Seleccione un álbum", new { @class = "form-select" })
+            @Html.ValidationMessageFor(m => m.CodigoAlbum)
+            <br />
+
+            @Html.LabelFor(m => m.NombreCancion)
+            @Html.TextBoxFor(m => m.NombreCancion, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.NombreCancion)
+            <br />
+
+            @Html.LabelFor(m => m.LinkVideo)
+            @Html.TextBoxFor(m => m.LinkVideo, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.LinkVideo)
+            <br />
+
+            @Html.LabelFor(m => m.Precio)
+            @Html.TextBoxFor(m => m.Precio, new { @type = "number", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Precio)
+            <br />
+
+            @Html.LabelFor(m => m.CantidadDisponible)
+            @Html.TextBoxFor(m => m.CantidadDisponible, new { @type = "number", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CantidadDisponible)
+            <br />
+
+
+        </div>
+    </div>
+}
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myModal').modal('show');
+        });
+    </script>
+}
