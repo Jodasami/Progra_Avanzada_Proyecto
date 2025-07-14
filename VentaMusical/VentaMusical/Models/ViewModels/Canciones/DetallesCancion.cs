@@ -6,8 +6,10 @@ using System.Web;
 
 namespace VentaMusical.Models.ViewModels.Canciones
 {
-	public class Cancion
+	public class DetallesCancion
 	{
+        /* ATRIBUTOS QUE CORRESPONDEN A CANCION */
+
         [Display(Name = "Cod. Canción")]
         public int CodigoCancion { get; set; }
 
@@ -35,6 +37,24 @@ namespace VentaMusical.Models.ViewModels.Canciones
         [Display(Name = "Disponible")]
         public int CantidadDisponible { get; set; }
 
+
+        /* ATRIBUTOS QUE CORRESPONDEN A ALBUMES */
+        public string NombreAlbum { get; set; } 
+        public string ImagenAlbum{ get; set; }
+        public int Anno{ get; set; }
+
+
+        /* ATRIBUTOS QUE CORRESPONDEN A ARTISTA */
+        public int CodigoArtista { get; set; }
+        public string NombreArtistico { get; set; }
+        public string FechaNacimiento { get; set; }
+        public string NombreReal { get; set; }
+        public string Nacionalidad { get; set; }
+        public string Foto { get; set; }
+        public string LinkBiografia { get; set; }
+
+        /* ATRIBUTOS ADICIONALES */
+        public string NombreGenero { get; set; }
 
     }
 }
