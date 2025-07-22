@@ -1,205 +1,205 @@
 ------****************************** PROCEDIMIENTOS ALMACENADOS ******************************
 
-USE VentaMusical;
+--USE VentaMusical;
 
 /*--------------------------------------------------------------------*/
 /*------------------------- TABLA DE ALBUM -------------------------*/
 /*--------------------------------------------------------------------*/
 
 ---- ________________________Insertar Album________________________----
-CREATE PROCEDURE spInsertarAlbum
-    @CodigoArtista  INT,
-    @NombreAlbum    VARCHAR(150),
-    @AnoLanzamiento INT,
-    @Imagen         VARCHAR(150)
-AS
-BEGIN
+--CREATE PROCEDURE spInsertarAlbum
+--    @CodigoArtista  INT,
+--    @NombreAlbum    VARCHAR(150),
+--    @AnoLanzamiento INT,
+--    @Imagen         VARCHAR(150)
+--AS
+--BEGIN
     
-    IF NOT EXISTS (SELECT 1 FROM Artistas WHERE CodigoArtista = @CodigoArtista)
-    BEGIN
+--    IF NOT EXISTS (SELECT 1 FROM Artistas WHERE CodigoArtista = @CodigoArtista)
+--    BEGIN
         
-        RAISERROR('Error: El artista con el código especificado no existe.', 16, 1);
-        RETURN;
-    END
+--        RAISERROR('Error: El artista con el código especificado no existe.', 16, 1);
+--        RETURN;
+--    END
 
-    BEGIN TRY
-        BEGIN TRANSACTION;
+--    BEGIN TRY
+--        BEGIN TRANSACTION;
 
-        INSERT INTO Albumes (CodigoArtista, NombreAlbum, AnoLanzamiento, Imagen)
-        VALUES (@CodigoArtista, @NombreAlbum, @AnoLanzamiento, @Imagen);
+--        INSERT INTO Albumes (CodigoArtista, NombreAlbum, AnoLanzamiento, Imagen)
+--        VALUES (@CodigoArtista, @NombreAlbum, @AnoLanzamiento, @Imagen);
         
-        COMMIT;
-    END TRY
-    BEGIN CATCH
-        ROLLBACK;
-        THROW;
-    END CATCH
-END
-GO
+--        COMMIT;
+--    END TRY
+--    BEGIN CATCH
+--        ROLLBACK;
+--        THROW;
+--    END CATCH
+--END
+--GO
 
 ---- ________________________Actualizar Album________________________----
-CREATE PROCEDURE spActualizarAlbum
-    @CodigoAlbum    INT,
-    @CodigoArtista  INT,
-    @NombreAlbum    VARCHAR(150),
-    @AnoLanzamiento INT,
-    @Imagen         VARCHAR(150)
-AS
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM Artistas WHERE CodigoArtista = @CodigoArtista)
-    BEGIN
-        RAISERROR('Error: El artista con el código especificado no existe.', 16, 1);
-        RETURN;
-    END
+--CREATE PROCEDURE spActualizarAlbum
+--    @CodigoAlbum    INT,
+--    @CodigoArtista  INT,
+--    @NombreAlbum    VARCHAR(150),
+--    @AnoLanzamiento INT,
+--    @Imagen         VARCHAR(150)
+--AS
+--BEGIN
+--    IF NOT EXISTS (SELECT 1 FROM Artistas WHERE CodigoArtista = @CodigoArtista)
+--    BEGIN
+--        RAISERROR('Error: El artista con el código especificado no existe.', 16, 1);
+--        RETURN;
+--    END
 
-    BEGIN TRY
-        BEGIN TRANSACTION;
+--    BEGIN TRY
+--        BEGIN TRANSACTION;
 
-        UPDATE Albumes
-        SET
-            CodigoArtista = @CodigoArtista,
-            NombreAlbum = @NombreAlbum,
-            AnoLanzamiento = @AnoLanzamiento,
-            Imagen = @Imagen
-        WHERE
-            CodigoAlbum = @CodigoAlbum;
+--        UPDATE Albumes
+--        SET
+--            CodigoArtista = @CodigoArtista,
+--            NombreAlbum = @NombreAlbum,
+--            AnoLanzamiento = @AnoLanzamiento,
+--            Imagen = @Imagen
+--        WHERE
+--            CodigoAlbum = @CodigoAlbum;
 
-        COMMIT;
-    END TRY
-    BEGIN CATCH
-        ROLLBACK;
-        THROW;
-    END CATCH
-END
-GO
+--        COMMIT;
+--    END TRY
+--    BEGIN CATCH
+--        ROLLBACK;
+--        THROW;
+--    END CATCH
+--END
+--GO
 
 ---- ________________________Eliminar Album________________________----
-CREATE PROCEDURE spEliminarAlbum
-    @CodigoAlbum INT
-AS
-BEGIN
+--CREATE PROCEDURE spEliminarAlbum
+--    @CodigoAlbum INT
+--AS
+--BEGIN
     
-   DELETE FROM Albumes
-    WHERE CodigoAlbum = @CodigoAlbum;
-END
-GO
+--   DELETE FROM Albumes
+--    WHERE CodigoAlbum = @CodigoAlbum;
+--END
+--GO
 
 ---- ________________________Listar todos los Albumes________________________----
-CREATE PROCEDURE spListarAlbumes
-AS
-BEGIN
-    SELECT CodigoAlbum, CodigoArtista, NombreAlbum, AnoLanzamiento, Imagen
-    FROM Albumes
-    ORDER BY NombreAlbum;
-END
-GO
+--CREATE PROCEDURE spListarAlbumes
+--AS
+--BEGIN
+--    SELECT CodigoAlbum, CodigoArtista, NombreAlbum, AnoLanzamiento, Imagen
+--    FROM Albumes
+--    ORDER BY NombreAlbum;
+--END
+--GO
 
 ---- ________________________Listar Album por ID________________________----
-CREATE PROCEDURE spListarAlbumPorID
-    @CodigoAlbum INT
-AS
-BEGIN
-    SELECT CodigoAlbum, CodigoArtista, NombreAlbum, AnoLanzamiento, Imagen
-    FROM Albumes
-    WHERE CodigoAlbum = @CodigoAlbum;
-END
-GO
+--CREATE PROCEDURE spListarAlbumPorID
+--    @CodigoAlbum INT
+--AS
+--BEGIN
+--    SELECT CodigoAlbum, CodigoArtista, NombreAlbum, AnoLanzamiento, Imagen
+--    FROM Albumes
+--    WHERE CodigoAlbum = @CodigoAlbum;
+--END
+--GO
 
 /*--------------------------------------------------------------------*/
 /*------------------------- TABLA DE ARTISTAS -------------------------*/
 /*--------------------------------------------------------------------*/
 
 ---- ________________________Agregar Artista________________________ ----
-CREATE PROCEDURE spAgregarArtista
-    @NombreArtistico    VARCHAR(100),
-    @FechaNacimiento    VARCHAR(100),
-    @NombreReal         VARCHAR(100),
-    @Nacionalidad       VARCHAR(100),
-    @Foto               VARCHAR(100),
-    @LinkBiografia      VARCHAR(MAX)
-AS
-BEGIN
-    BEGIN TRY
-        BEGIN TRANSACTION;
+--CREATE PROCEDURE spAgregarArtista
+--    @NombreArtistico    VARCHAR(100),
+--    @FechaNacimiento    VARCHAR(100),
+--    @NombreReal         VARCHAR(100),
+--    @Nacionalidad       VARCHAR(100),
+--    @Foto               VARCHAR(100),
+--    @LinkBiografia      VARCHAR(MAX)
+--AS
+--BEGIN
+--    BEGIN TRY
+--        BEGIN TRANSACTION;
 
-        INSERT INTO ARTISTAS (NombreArtistico, FechaNacimiento, NombreReal, Nacionalidad, Foto, LinkBiografia)
-        VALUES (@NombreArtistico, @FechaNacimiento, @NombreReal, @Nacionalidad, @Foto, @LinkBiografia);
+--        INSERT INTO ARTISTAS (NombreArtistico, FechaNacimiento, NombreReal, Nacionalidad, Foto, LinkBiografia)
+--        VALUES (@NombreArtistico, @FechaNacimiento, @NombreReal, @Nacionalidad, @Foto, @LinkBiografia);
 
-        COMMIT;
-    END TRY
-    BEGIN CATCH
-        ROLLBACK;
-        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
-        RAISERROR('Error al agregar al artista: %s', 16, 1, @ErrorMessage);
-    END CATCH
-END;
-GO
+--        COMMIT;
+--    END TRY
+--    BEGIN CATCH
+--        ROLLBACK;
+--        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+--        RAISERROR('Error al agregar al artista: %s', 16, 1, @ErrorMessage);
+--    END CATCH
+--END;
+--GO
 
 ---- ________________________Actualizar Artista________________________ ----
-CREATE PROCEDURE spActualizarArtista
-    @CodigoArtista      INT,
-    @NombreArtistico    VARCHAR(100),
-    @FechaNacimiento    VARCHAR(100),
-    @NombreReal         VARCHAR(100),
-    @Nacionalidad       VARCHAR(100),
-    @Foto               VARCHAR(100),
-    @LinkBiografia      VARCHAR(MAX)
-AS
-BEGIN
-    BEGIN TRY
-        BEGIN TRANSACTION;
+--CREATE PROCEDURE spActualizarArtista
+--    @CodigoArtista      INT,
+--    @NombreArtistico    VARCHAR(100),
+--    @FechaNacimiento    VARCHAR(100),
+--    @NombreReal         VARCHAR(100),
+--    @Nacionalidad       VARCHAR(100),
+--    @Foto               VARCHAR(100),
+--    @LinkBiografia      VARCHAR(MAX)
+--AS
+--BEGIN
+--    BEGIN TRY
+--        BEGIN TRANSACTION;
 
-        UPDATE ARTISTAS
-        SET 
-            NombreArtistico = @NombreArtistico,
-            FechaNacimiento = @FechaNacimiento,
-            NombreReal = @NombreReal,
-            Nacionalidad = @Nacionalidad,
-            Foto = @Foto,
-            LinkBiografia = @LinkBiografia
-        WHERE 
-            CodigoArtista = @CodigoArtista;
+--        UPDATE ARTISTAS
+--        SET 
+--            NombreArtistico = @NombreArtistico,
+--            FechaNacimiento = @FechaNacimiento,
+--            NombreReal = @NombreReal,
+--            Nacionalidad = @Nacionalidad,
+--            Foto = @Foto,
+--            LinkBiografia = @LinkBiografia
+--        WHERE 
+--            CodigoArtista = @CodigoArtista;
 
-        COMMIT;
-    END TRY
-    BEGIN CATCH
-        ROLLBACK;
-        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
-        RAISERROR('Error al actualizar el artista: %s', 16, 1, @ErrorMessage);
-    END CATCH
-END;
-GO
+--        COMMIT;
+--    END TRY
+--    BEGIN CATCH
+--        ROLLBACK;
+--        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+--        RAISERROR('Error al actualizar el artista: %s', 16, 1, @ErrorMessage);
+--    END CATCH
+--END;
+--GO
 
 ---- ________________________Eliminar Artista________________________ ----
-CREATE PROCEDURE spEliminarArtista
-    @CodigoArtista INT
-AS
-BEGIN
-    DELETE
-    FROM Artistas
-    WHERE CodigoArtista = @CodigoArtista;
-END;
-GO
+--CREATE PROCEDURE spEliminarArtista
+--    @CodigoArtista INT
+--AS
+--BEGIN
+--    DELETE
+--    FROM Artistas
+--    WHERE CodigoArtista = @CodigoArtista;
+--END;
+--GO
 
 ---- ________________________Mostrar Artistas________________________ ----
-CREATE PROCEDURE spMostrarTodosArtistas
-AS
-BEGIN
-    SELECT CodigoArtista, NombreArtistico, FechaNacimiento, NombreReal, Nacionalidad, Foto, LinkBiografia
-    FROM Artistas;
-END;
-GO
+--CREATE PROCEDURE spMostrarTodosArtistas
+--AS
+--BEGIN
+--    SELECT CodigoArtista, NombreArtistico, FechaNacimiento, NombreReal, Nacionalidad, Foto, LinkBiografia
+--    FROM Artistas;
+--END;
+--GO
 
 ---- ________________________Mostrar Artista Por Id________________________ ----
-CREATE PROCEDURE spMostrarArtistaPorId
-    @CodigoArtista INT
-AS
-BEGIN
-    SELECT CodigoArtista, NombreArtistico, FechaNacimiento, NombreReal, Nacionalidad, Foto, LinkBiografia
-    FROM Artistas
-    WHERE CodigoArtista = @CodigoArtista;
-END;
-GO
+--CREATE PROCEDURE spMostrarArtistaPorId
+--    @CodigoArtista INT
+--AS
+--BEGIN
+--    SELECT CodigoArtista, NombreArtistico, FechaNacimiento, NombreReal, Nacionalidad, Foto, LinkBiografia
+--    FROM Artistas
+--    WHERE CodigoArtista = @CodigoArtista;
+--END;
+--GO
 
 /*--------------------------------------------------------------------*/
 /*------------------------- TABLA DE CANCIONES -------------------------*/

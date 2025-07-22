@@ -1,4 +1,4 @@
-﻿// La generación de código T4 está habilitada para el modelo 'C:\Universidad\UAM\2025\Cuatrimestre II\Programación Avanzada\Proyecto\VentaMusical\VentaMusical\Models\Model1.edmx'. 
+﻿// La generación de código T4 está habilitada para el modelo 'C:\Proyecto_Progra_Avanzada\Progra_Avanzada_Proyecto\VentaMusical\VentaMusical\Models\Model1.edmx'. 
 // Para habilitar la generación de código heredada, cambie el valor de la propiedad del diseñador 'Estrategia de generación de código'
 // por 'ObjectContext heredado'. Esta propiedad está disponible en la ventana Propiedades cuando se abre
 // el modelo en el diseñador.

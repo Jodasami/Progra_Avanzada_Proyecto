@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using VentaMusical.Models.Venta;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;

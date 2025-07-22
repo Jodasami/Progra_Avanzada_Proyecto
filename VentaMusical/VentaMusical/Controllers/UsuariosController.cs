@@ -6,19 +6,20 @@ using System.Web.Mvc;
 using VentaMusical.Models;
 using VentaMusical.Models.ViewModels.Usuarios;
 
+
 namespace VentaMusical.Controllers
 {
     public class UsuariosController : Controller
     {
 
-        private VentaMusicalEntities db = new VentaMusicalEntities();
+        private  Context db = new Context();
 
         // GET: Usuarios
         public ActionResult Index(string busquedaCedula)
         {
             try
             {
-                using (VentaMusicalEntities db = new VentaMusicalEntities())
+                using (Context db = new Context())
                 {
                     var usuariosFiltrados = db.Usuarios.AsQueryable();
 
@@ -29,12 +30,12 @@ namespace VentaMusical.Controllers
 
                     var viewModel = usuariosFiltrados.Select(s => new Models.ViewModels.Usuarios.ListarUsuarios
                     {
-                        ID = s.ID,
+                        ID = s.IDUsuario,
                         NumeroIdentificacion = s.NumeroIdentificacion,
                         Nombre = s.Nombre,
                         Apellido = s.Apellido,
                         Genero = s.Genero,
-                        Correo = s.CorreoElectronico,
+                        Correo = s.Correo,
                         TipoTarjeta = s.TipoTarjeta,
                         DineroDisponible = s.DineroDisponible,
                         NumeroTarjeta = s.NumeroTarjeta,
@@ -57,17 +58,17 @@ namespace VentaMusical.Controllers
             try
             {
                 Usuario usuario = new Usuario();
-                using (VentaMusicalEntities db = new VentaMusicalEntities())
+                using (Context db = new Context())
                 {
-                    var datosUsuario = db.Usuarios.FirstOrDefault(s => s.ID == id);
+                    var datosUsuario = db.Usuarios.FirstOrDefault(s => s.IDUsuario == id);
                     if (datosUsuario != null)
                     {
-                        usuario.IDUsuario = datosUsuario.ID;
+                        usuario.IDUsuario = datosUsuario.IDUsuario;
                         usuario.NumeroIdentificacion = datosUsuario.NumeroIdentificacion;
                         usuario.Nombre = datosUsuario.Nombre;
                         usuario.Apellido = datosUsuario.Apellido;
                         usuario.Genero = datosUsuario.Genero;
-                        usuario.Correo = datosUsuario.CorreoElectronico;
+                        usuario.Correo = datosUsuario.Correo;
                         usuario.TipoTarjeta = datosUsuario.TipoTarjeta;
                         usuario.DineroDisponible = datosUsuario.DineroDisponible;
                         usuario.NumeroTarjeta = datosUsuario.NumeroTarjeta;
@@ -100,15 +101,15 @@ namespace VentaMusical.Controllers
                 {
                     return View(usuario);
                 }
-                using (VentaMusicalEntities db = new VentaMusicalEntities())
+                using (Context db = new Context())
                 {
-                    Usuarios nuevoUsuario = new Usuarios()
+                    Usuario nuevoUsuario = new Usuario()
                     {
                         NumeroIdentificacion = usuario.NumeroIdentificacion,
                         Nombre = usuario.Nombre,
                         Apellido = usuario.Apellido,
                         Genero = usuario.Genero,
-                        CorreoElectronico = usuario.Correo,
+                        Correo = usuario.Correo,
                         TipoTarjeta = usuario.TipoTarjeta,
                         DineroDisponible = usuario.DineroDisponible,
                         NumeroTarjeta = usuario.NumeroTarjeta,
@@ -138,17 +139,17 @@ namespace VentaMusical.Controllers
             try
             {
                 EditarUsuario usuario = new EditarUsuario();
-                using (VentaMusicalEntities db = new VentaMusicalEntities())
+                using (Context db = new Context())
                 {
-                    var datosUsuario = db.Usuarios.FirstOrDefault(s => s.ID == id);
+                    var datosUsuario = db.Usuarios.FirstOrDefault(s => s.IDUsuario == id);
                     if (datosUsuario != null)
                     {
-                        usuario.IDUsuario = datosUsuario.ID;
+                        usuario.IDUsuario = datosUsuario.IDUsuario;
                         usuario.NumeroIdentificacion = datosUsuario.NumeroIdentificacion;
                         usuario.Nombre = datosUsuario.Nombre;
                         usuario.Apellido = datosUsuario.Apellido;
                         usuario.Genero = datosUsuario.Genero;
-                        usuario.Correo = datosUsuario.CorreoElectronico;
+                        usuario.Correo = datosUsuario.Correo;
                         usuario.TipoTarjeta = datosUsuario.TipoTarjeta;
                         usuario.DineroDisponible = datosUsuario.DineroDisponible;
                         usuario.NumeroTarjeta = datosUsuario.NumeroTarjeta;
@@ -175,7 +176,7 @@ namespace VentaMusical.Controllers
                 {
                     return View(usuario);
                 }
-                using (VentaMusicalEntities db = new VentaMusicalEntities())
+                using (Context db = new Context())
                 {
                     var usuarioActual = db.Usuarios.Find(usuario.IDUsuario);
                     if (usuarioActual != null)
@@ -184,7 +185,7 @@ namespace VentaMusical.Controllers
                         usuarioActual.Nombre = usuario.Nombre;
                         usuarioActual.Apellido = usuario.Apellido;
                         usuarioActual.Genero = usuario.Genero;
-                        usuarioActual.CorreoElectronico = usuario.Correo;
+                        usuarioActual.Correo = usuario.Correo;
                         usuarioActual.TipoTarjeta = usuario.TipoTarjeta;
                         usuarioActual.DineroDisponible = usuario.DineroDisponible;
                         usuarioActual.NumeroTarjeta = usuario.NumeroTarjeta;
@@ -218,12 +219,12 @@ namespace VentaMusical.Controllers
 
             var modelo = new Usuario
             {
-                IDUsuario = usuario.ID,
+                IDUsuario = usuario.IDUsuario,
                 NumeroIdentificacion = usuario.NumeroIdentificacion,
                 Nombre = usuario.Nombre,
                 Apellido = usuario.Apellido,
                 Genero = usuario.Genero,
-                Correo = usuario.CorreoElectronico,
+                Correo = usuario.Correo,
                 TipoTarjeta = usuario.TipoTarjeta,
                 DineroDisponible = usuario.DineroDisponible,
                 NumeroTarjeta = usuario.NumeroTarjeta,

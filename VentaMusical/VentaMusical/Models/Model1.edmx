@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="VentaMusicalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="VentaMusicalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Albumes">
           <Key>
             <PropertyRef Name="CodigoAlbum" />
@@ -59,7 +59,9 @@
           <Property Name="IDDetalle" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NumeroFactura" Type="int" Nullable="false" />
           <Property Name="CodigoCancion" Type="int" Nullable="false" />
-          <Property Name="Subtotal" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="PrecioUnitario" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="SubTotal" Type="decimal" Precision="10" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="Generos">
           <Key>
@@ -93,8 +95,10 @@
           <Property Name="FechaCompra" Type="datetime" Nullable="false" />
           <Property Name="Total" Type="decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="TipoPago" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="Subtotal" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="FechaResrva" Type="datetime" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Albumes__CodigoA__2B3F6F97">
+        <Association Name="FK__Albumes__CodigoA__3E52440B">
           <End Role="Artistas" Type="Self.Artistas" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -108,7 +112,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Canciones__Codig__2E1BDC42">
+        <Association Name="FK__Canciones__Codig__412EB0B6">
           <End Role="Generos" Type="Self.Generos" Multiplicity="1" />
           <End Role="Canciones" Type="Self.Canciones" Multiplicity="*" />
           <ReferentialConstraint>
@@ -120,7 +124,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Canciones__Codig__2F10007B">
+        <Association Name="FK__Canciones__Codig__4222D4EF">
           <End Role="Albumes" Type="Self.Albumes" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -134,7 +138,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__DetalleVe__Codig__36B12243">
+        <Association Name="FK__DetalleVe__Codig__49C3F6B7">
           <End Role="Canciones" Type="Self.Canciones" Multiplicity="1" />
           <End Role="DetalleVenta" Type="Self.DetalleVenta" Multiplicity="*" />
           <ReferentialConstraint>
@@ -146,7 +150,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__DetalleVe__Numer__35BCFE0A">
+        <Association Name="FK__DetalleVe__Numer__48CFD27E">
           <End Role="Ventas" Type="Self.Ventas" Multiplicity="1" />
           <End Role="DetalleVenta" Type="Self.DetalleVenta" Multiplicity="*" />
           <ReferentialConstraint>
@@ -158,7 +162,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Ventas__IDUsuari__32E0915F">
+        <Association Name="FK__Ventas__IDUsuari__45F365D3">
           <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
           <End Role="Ventas" Type="Self.Ventas" Multiplicity="*" />
           <ReferentialConstraint>
@@ -170,32 +174,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="EditarDetalleVenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="IDDetalle" Type="int" Mode="In" />
-          <Parameter Name="NumeroFactura" Type="int" Mode="In" />
-          <Parameter Name="CodigoCancion" Type="int" Mode="In" />
-          <Parameter Name="Subtotal" Type="decimal" Mode="In" />
-        </Function>
-        <Function Name="EditarGenero" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="CodigoGenero" Type="int" Mode="In" />
-          <Parameter Name="NuevaDescripcion" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="EliminarDetalleVenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="IDDetalle" Type="int" Mode="In" />
-        </Function>
-        <Function Name="EliminarGenero" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="CodigoGenero" Type="int" Mode="In" />
-        </Function>
-        <Function Name="InsertarDetalleVenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="NumeroFactura" Type="int" Mode="In" />
-          <Parameter Name="CodigoCancion" Type="int" Mode="In" />
-          <Parameter Name="Subtotal" Type="decimal" Mode="In" />
-        </Function>
-        <Function Name="InsertarGenero" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Descripcion" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="ListaGeneros" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="ListarDetalleVenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spActualizarAlbum" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CodigoAlbum" Type="int" Mode="In" />
           <Parameter Name="CodigoArtista" Type="int" Mode="In" />
@@ -212,28 +190,6 @@
           <Parameter Name="Foto" Type="varchar" Mode="In" />
           <Parameter Name="LinkBiografia" Type="varchar(max)" Mode="In" />
         </Function>
-        <Function Name="spActualizarCancion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="CodigoCancion" Type="int" Mode="In" />
-          <Parameter Name="CodigoGenero" Type="int" Mode="In" />
-          <Parameter Name="CodigoAlbum" Type="int" Mode="In" />
-          <Parameter Name="NombreCancion" Type="varchar" Mode="In" />
-          <Parameter Name="LinkVideo" Type="varchar(max)" Mode="In" />
-          <Parameter Name="Precio" Type="decimal" Mode="In" />
-          <Parameter Name="CantidadDisponible" Type="int" Mode="In" />
-        </Function>
-        <Function Name="spActualizarUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="ID" Type="int" Mode="In" />
-          <Parameter Name="NumeroIdentificacion" Type="varchar" Mode="In" />
-          <Parameter Name="Nombre" Type="varchar" Mode="In" />
-          <Parameter Name="Apellido" Type="varchar" Mode="In" />
-          <Parameter Name="Genero" Type="nvarchar" Mode="In" />
-          <Parameter Name="CorreoElectronico" Type="varchar" Mode="In" />
-          <Parameter Name="TipoTarjeta" Type="nvarchar" Mode="In" />
-          <Parameter Name="DineroDisponible" Type="decimal" Mode="In" />
-          <Parameter Name="NumeroTarjeta" Type="varchar" Mode="In" />
-          <Parameter Name="Contrasena" Type="varchar" Mode="In" />
-          <Parameter Name="Perfil" Type="nvarchar" Mode="In" />
-        </Function>
         <Function Name="spAgregarArtista" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="NombreArtistico" Type="varchar" Mode="In" />
           <Parameter Name="FechaNacimiento" Type="varchar" Mode="In" />
@@ -242,43 +198,11 @@
           <Parameter Name="Foto" Type="varchar" Mode="In" />
           <Parameter Name="LinkBiografia" Type="varchar(max)" Mode="In" />
         </Function>
-        <Function Name="spAgregarCancion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="CodigoGenero" Type="int" Mode="In" />
-          <Parameter Name="CodigoAlbum" Type="int" Mode="In" />
-          <Parameter Name="NombreCancion" Type="varchar" Mode="In" />
-          <Parameter Name="LinkVideo" Type="varchar(max)" Mode="In" />
-          <Parameter Name="Precio" Type="decimal" Mode="In" />
-          <Parameter Name="CantidadDisponible" Type="int" Mode="In" />
-        </Function>
-        <Function Name="spAgregarUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="NumeroIdentificacion" Type="varchar" Mode="In" />
-          <Parameter Name="Nombre" Type="varchar" Mode="In" />
-          <Parameter Name="Apellido" Type="varchar" Mode="In" />
-          <Parameter Name="Genero" Type="nvarchar" Mode="In" />
-          <Parameter Name="CorreoElectronico" Type="varchar" Mode="In" />
-          <Parameter Name="TipoTarjeta" Type="nvarchar" Mode="In" />
-          <Parameter Name="DineroDisponible" Type="decimal" Mode="In" />
-          <Parameter Name="NumeroTarjeta" Type="varchar" Mode="In" />
-          <Parameter Name="Contrasena" Type="varchar" Mode="In" />
-          <Parameter Name="Perfil" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="spAgregarVenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="IDUsuario" Type="int" Mode="In" />
-          <Parameter Name="FechaCompra" Type="datetime" Mode="In" />
-          <Parameter Name="Total" Type="decimal" Mode="In" />
-          <Parameter Name="TipoPago" Type="nvarchar" Mode="In" />
-        </Function>
         <Function Name="spEliminarAlbum" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CodigoAlbum" Type="int" Mode="In" />
         </Function>
         <Function Name="spEliminarArtista" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CodigoArtista" Type="int" Mode="In" />
-        </Function>
-        <Function Name="spEliminarCancion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="CodigoCancion" Type="int" Mode="In" />
-        </Function>
-        <Function Name="spEliminarUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Id" Type="int" Mode="In" />
         </Function>
         <Function Name="spInsertarAlbum" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CodigoArtista" Type="int" Mode="In" />
@@ -293,27 +217,7 @@
         <Function Name="spMostrarArtistaPorId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CodigoArtista" Type="int" Mode="In" />
         </Function>
-        <Function Name="spMostrarAuditoria" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="spMostrarAuditoriaPorFecha" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="FechaInicio" Type="datetime" Mode="In" />
-          <Parameter Name="FechaFin" Type="datetime" Mode="In" />
-        </Function>
-        <Function Name="spMostrarAuditoriaPorTabla" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="TablaAfectada" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="spMostrarCancionPorCodigo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="CodigoCancion" Type="int" Mode="In" />
-        </Function>
-        <Function Name="spMostrarTodasCanciones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spMostrarTodosArtistas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="spMostrarTodosUsuarios" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="spMostrarUsuariosPorId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="spMostrarVentaPorId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="NumeroFactura" Type="int" Mode="In" />
-        </Function>
-        <Function Name="spMostrarVentas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="VentaMusicalModelStoreContainer">
           <EntitySet Name="Albumes" EntityType="Self.Albumes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Artistas" EntityType="Self.Artistas" Schema="dbo" store:Type="Tables" />
@@ -323,33 +227,32 @@
           <EntitySet Name="Generos" EntityType="Self.Generos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ventas" EntityType="Self.Ventas" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Albumes__CodigoA__2B3F6F97" Association="Self.FK__Albumes__CodigoA__2B3F6F97">
+          <AssociationSet Name="FK__Albumes__CodigoA__3E52440B" Association="Self.FK__Albumes__CodigoA__3E52440B">
             <End Role="Artistas" EntitySet="Artistas" />
             <End Role="Albumes" EntitySet="Albumes" />
           </AssociationSet>
-          <AssociationSet Name="FK__Canciones__Codig__2E1BDC42" Association="Self.FK__Canciones__Codig__2E1BDC42">
+          <AssociationSet Name="FK__Canciones__Codig__412EB0B6" Association="Self.FK__Canciones__Codig__412EB0B6">
             <End Role="Generos" EntitySet="Generos" />
             <End Role="Canciones" EntitySet="Canciones" />
           </AssociationSet>
-          <AssociationSet Name="FK__Canciones__Codig__2F10007B" Association="Self.FK__Canciones__Codig__2F10007B">
+          <AssociationSet Name="FK__Canciones__Codig__4222D4EF" Association="Self.FK__Canciones__Codig__4222D4EF">
             <End Role="Albumes" EntitySet="Albumes" />
             <End Role="Canciones" EntitySet="Canciones" />
           </AssociationSet>
-          <AssociationSet Name="FK__DetalleVe__Codig__36B12243" Association="Self.FK__DetalleVe__Codig__36B12243">
+          <AssociationSet Name="FK__DetalleVe__Codig__49C3F6B7" Association="Self.FK__DetalleVe__Codig__49C3F6B7">
             <End Role="Canciones" EntitySet="Canciones" />
             <End Role="DetalleVenta" EntitySet="DetalleVenta" />
           </AssociationSet>
-          <AssociationSet Name="FK__DetalleVe__Numer__35BCFE0A" Association="Self.FK__DetalleVe__Numer__35BCFE0A">
+          <AssociationSet Name="FK__DetalleVe__Numer__48CFD27E" Association="Self.FK__DetalleVe__Numer__48CFD27E">
             <End Role="Ventas" EntitySet="Ventas" />
             <End Role="DetalleVenta" EntitySet="DetalleVenta" />
           </AssociationSet>
-          <AssociationSet Name="FK__Ventas__IDUsuari__32E0915F" Association="Self.FK__Ventas__IDUsuari__32E0915F">
+          <AssociationSet Name="FK__Ventas__IDUsuari__45F365D3" Association="Self.FK__Ventas__IDUsuari__45F365D3">
             <End Role="Usuarios" EntitySet="Usuarios" />
             <End Role="Ventas" EntitySet="Ventas" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="VentaMusicalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -416,6 +319,9 @@
           <Property Name="Subtotal" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
           <NavigationProperty Name="Canciones" Relationship="Self.FK__DetalleVe__Codig__36B12243" FromRole="DetalleVenta" ToRole="Canciones" />
           <NavigationProperty Name="Ventas" Relationship="Self.FK__DetalleVe__Numer__35BCFE0A" FromRole="DetalleVenta" ToRole="Ventas" />
+          <Property Name="PrecioUnitario" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="SubTotal" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
         </EntityType>
         <EntityType Name="Generos">
           <Key>
@@ -453,6 +359,8 @@
           <Property Name="TipoPago" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="DetalleVenta" Relationship="Self.FK__DetalleVe__Numer__35BCFE0A" FromRole="Ventas" ToRole="DetalleVenta" />
           <NavigationProperty Name="Usuarios" Relationship="Self.FK__Ventas__IDUsuari__32E0915F" FromRole="Ventas" ToRole="Usuarios" />
+          <Property Name="Subtotal" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="FechaResrva" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <Association Name="FK__Albumes__CodigoA__2B3F6F97">
           <End Role="Artistas" Type="Self.Artistas" Multiplicity="1">
@@ -662,10 +570,10 @@
             <Parameter Name="TipoPago" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spEliminarAlbum">
-            <Parameter Name="CodigoAlbum" Mode="In" Type="Int32" />
+          <Parameter Name="CodigoAlbum" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spEliminarArtista">
-            <Parameter Name="CodigoArtista" Mode="In" Type="Int32" />
+          <Parameter Name="CodigoArtista" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spEliminarCancion">
             <Parameter Name="CodigoCancion" Mode="In" Type="Int32" />
@@ -681,10 +589,10 @@
           </FunctionImport>
           <FunctionImport Name="spListarAlbumes" ReturnType="Collection(VentaMusicalModel.spListarAlbumes_Result)" />
           <FunctionImport Name="spListarAlbumPorID" ReturnType="Collection(VentaMusicalModel.spListarAlbumPorID_Result)">
-            <Parameter Name="CodigoAlbum" Mode="In" Type="Int32" />
+          <Parameter Name="CodigoAlbum" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spMostrarArtistaPorId" ReturnType="Collection(VentaMusicalModel.spMostrarArtistaPorId_Result)">
-            <Parameter Name="CodigoArtista" Mode="In" Type="Int32" />
+          <Parameter Name="CodigoArtista" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spMostrarAuditoria" ReturnType="Collection(VentaMusicalModel.spMostrarAuditoria_Result)" />
           <FunctionImport Name="spMostrarAuditoriaPorFecha" ReturnType="Collection(VentaMusicalModel.spMostrarAuditoriaPorFecha_Result)">
@@ -898,10 +806,12 @@
           <EntitySetMapping Name="DetalleVenta">
             <EntityTypeMapping TypeName="VentaMusicalModel.DetalleVenta">
               <MappingFragment StoreEntitySet="DetalleVenta">
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="PrecioUnitario" ColumnName="PrecioUnitario" />
                 <ScalarProperty Name="IDDetalle" ColumnName="IDDetalle" />
                 <ScalarProperty Name="NumeroFactura" ColumnName="NumeroFactura" />
                 <ScalarProperty Name="CodigoCancion" ColumnName="CodigoCancion" />
-                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -933,6 +843,8 @@
           <EntitySetMapping Name="Ventas">
             <EntityTypeMapping TypeName="VentaMusicalModel.Ventas">
               <MappingFragment StoreEntitySet="Ventas">
+                <ScalarProperty Name="FechaResrva" ColumnName="FechaResrva" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
                 <ScalarProperty Name="NumeroFactura" ColumnName="NumeroFactura" />
                 <ScalarProperty Name="IDUsuario" ColumnName="IDUsuario" />
                 <ScalarProperty Name="FechaCompra" ColumnName="FechaCompra" />
@@ -941,42 +853,11 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="EditarDetalleVenta" FunctionName="VentaMusicalModel.Store.EditarDetalleVenta" />
-          <FunctionImportMapping FunctionImportName="EditarGenero" FunctionName="VentaMusicalModel.Store.EditarGenero" />
-          <FunctionImportMapping FunctionImportName="EliminarDetalleVenta" FunctionName="VentaMusicalModel.Store.EliminarDetalleVenta" />
-          <FunctionImportMapping FunctionImportName="EliminarGenero" FunctionName="VentaMusicalModel.Store.EliminarGenero" />
-          <FunctionImportMapping FunctionImportName="InsertarDetalleVenta" FunctionName="VentaMusicalModel.Store.InsertarDetalleVenta" />
-          <FunctionImportMapping FunctionImportName="InsertarGenero" FunctionName="VentaMusicalModel.Store.InsertarGenero" />
-          <FunctionImportMapping FunctionImportName="ListaGeneros" FunctionName="VentaMusicalModel.Store.ListaGeneros">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VentaMusicalModel.ListaGeneros_Result">
-                <ScalarProperty Name="CodigoGenero" ColumnName="CodigoGenero" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="ListarDetalleVenta" FunctionName="VentaMusicalModel.Store.ListarDetalleVenta">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VentaMusicalModel.ListarDetalleVenta_Result">
-                <ScalarProperty Name="IDDetalle" ColumnName="IDDetalle" />
-                <ScalarProperty Name="NumeroFactura" ColumnName="NumeroFactura" />
-                <ScalarProperty Name="CodigoCancion" ColumnName="CodigoCancion" />
-                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spActualizarAlbum" FunctionName="VentaMusicalModel.Store.spActualizarAlbum" />
           <FunctionImportMapping FunctionImportName="spActualizarArtista" FunctionName="VentaMusicalModel.Store.spActualizarArtista" />
-          <FunctionImportMapping FunctionImportName="spActualizarCancion" FunctionName="VentaMusicalModel.Store.spActualizarCancion" />
-          <FunctionImportMapping FunctionImportName="spActualizarUsuario" FunctionName="VentaMusicalModel.Store.spActualizarUsuario" />
           <FunctionImportMapping FunctionImportName="spAgregarArtista" FunctionName="VentaMusicalModel.Store.spAgregarArtista" />
-          <FunctionImportMapping FunctionImportName="spAgregarCancion" FunctionName="VentaMusicalModel.Store.spAgregarCancion" />
-          <FunctionImportMapping FunctionImportName="spAgregarUsuario" FunctionName="VentaMusicalModel.Store.spAgregarUsuario" />
-          <FunctionImportMapping FunctionImportName="spAgregarVenta" FunctionName="VentaMusicalModel.Store.spAgregarVenta" />
           <FunctionImportMapping FunctionImportName="spEliminarAlbum" FunctionName="VentaMusicalModel.Store.spEliminarAlbum" />
           <FunctionImportMapping FunctionImportName="spEliminarArtista" FunctionName="VentaMusicalModel.Store.spEliminarArtista" />
-          <FunctionImportMapping FunctionImportName="spEliminarCancion" FunctionName="VentaMusicalModel.Store.spEliminarCancion" />
-          <FunctionImportMapping FunctionImportName="spEliminarUsuario" FunctionName="VentaMusicalModel.Store.spEliminarUsuario" />
           <FunctionImportMapping FunctionImportName="spInsertarAlbum" FunctionName="VentaMusicalModel.Store.spInsertarAlbum" />
           <FunctionImportMapping FunctionImportName="spListarAlbumes" FunctionName="VentaMusicalModel.Store.spListarAlbumes">
             <ResultMapping>
@@ -1013,74 +894,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spMostrarAuditoria" FunctionName="VentaMusicalModel.Store.spMostrarAuditoria">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VentaMusicalModel.spMostrarAuditoria_Result">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
-                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
-                <ScalarProperty Name="Accion" ColumnName="Accion" />
-                <ScalarProperty Name="TablaAfectada" ColumnName="TablaAfectada" />
-                <ScalarProperty Name="IDRegistroAfectado" ColumnName="IDRegistroAfectado" />
-                <ScalarProperty Name="Detalles" ColumnName="Detalles" />
-                <ScalarProperty Name="IPUsuario" ColumnName="IPUsuario" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spMostrarAuditoriaPorFecha" FunctionName="VentaMusicalModel.Store.spMostrarAuditoriaPorFecha">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VentaMusicalModel.spMostrarAuditoriaPorFecha_Result">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
-                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
-                <ScalarProperty Name="Accion" ColumnName="Accion" />
-                <ScalarProperty Name="TablaAfectada" ColumnName="TablaAfectada" />
-                <ScalarProperty Name="IDRegistroAfectado" ColumnName="IDRegistroAfectado" />
-                <ScalarProperty Name="Detalles" ColumnName="Detalles" />
-                <ScalarProperty Name="IPUsuario" ColumnName="IPUsuario" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spMostrarAuditoriaPorTabla" FunctionName="VentaMusicalModel.Store.spMostrarAuditoriaPorTabla">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VentaMusicalModel.spMostrarAuditoriaPorTabla_Result">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
-                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
-                <ScalarProperty Name="Accion" ColumnName="Accion" />
-                <ScalarProperty Name="TablaAfectada" ColumnName="TablaAfectada" />
-                <ScalarProperty Name="IDRegistroAfectado" ColumnName="IDRegistroAfectado" />
-                <ScalarProperty Name="Detalles" ColumnName="Detalles" />
-                <ScalarProperty Name="IPUsuario" ColumnName="IPUsuario" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spMostrarCancionPorCodigo" FunctionName="VentaMusicalModel.Store.spMostrarCancionPorCodigo">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VentaMusicalModel.spMostrarCancionPorCodigo_Result">
-                <ScalarProperty Name="CodigoCancion" ColumnName="CodigoCancion" />
-                <ScalarProperty Name="CodigoGenero" ColumnName="CodigoGenero" />
-                <ScalarProperty Name="CodigoAlbum" ColumnName="CodigoAlbum" />
-                <ScalarProperty Name="NombreCancion" ColumnName="NombreCancion" />
-                <ScalarProperty Name="LinkVideo" ColumnName="LinkVideo" />
-                <ScalarProperty Name="Precio" ColumnName="Precio" />
-                <ScalarProperty Name="CantidadDisponible" ColumnName="CantidadDisponible" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spMostrarTodasCanciones" FunctionName="VentaMusicalModel.Store.spMostrarTodasCanciones">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VentaMusicalModel.spMostrarTodasCanciones_Result">
-                <ScalarProperty Name="CodigoCancion" ColumnName="CodigoCancion" />
-                <ScalarProperty Name="CodigoGenero" ColumnName="CodigoGenero" />
-                <ScalarProperty Name="CodigoAlbum" ColumnName="CodigoAlbum" />
-                <ScalarProperty Name="NombreCancion" ColumnName="NombreCancion" />
-                <ScalarProperty Name="LinkVideo" ColumnName="LinkVideo" />
-                <ScalarProperty Name="Precio" ColumnName="Precio" />
-                <ScalarProperty Name="CantidadDisponible" ColumnName="CantidadDisponible" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spMostrarTodosArtistas" FunctionName="VentaMusicalModel.Store.spMostrarTodosArtistas">
             <ResultMapping>
               <ComplexTypeMapping TypeName="VentaMusicalModel.spMostrarTodosArtistas_Result">
@@ -1094,63 +907,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spMostrarTodosUsuarios" FunctionName="VentaMusicalModel.Store.spMostrarTodosUsuarios">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VentaMusicalModel.spMostrarTodosUsuarios_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="NumeroIdentificacion" ColumnName="NumeroIdentificacion" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
-                <ScalarProperty Name="Genero" ColumnName="Genero" />
-                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
-                <ScalarProperty Name="TipoTarjeta" ColumnName="TipoTarjeta" />
-                <ScalarProperty Name="DineroDisponible" ColumnName="DineroDisponible" />
-                <ScalarProperty Name="NumeroTarjeta" ColumnName="NumeroTarjeta" />
-                <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
-                <ScalarProperty Name="Perfil" ColumnName="Perfil" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spMostrarUsuariosPorId" FunctionName="VentaMusicalModel.Store.spMostrarUsuariosPorId">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VentaMusicalModel.spMostrarUsuariosPorId_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="NumeroIdentificacion" ColumnName="NumeroIdentificacion" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
-                <ScalarProperty Name="Genero" ColumnName="Genero" />
-                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
-                <ScalarProperty Name="TipoTarjeta" ColumnName="TipoTarjeta" />
-                <ScalarProperty Name="DineroDisponible" ColumnName="DineroDisponible" />
-                <ScalarProperty Name="NumeroTarjeta" ColumnName="NumeroTarjeta" />
-                <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
-                <ScalarProperty Name="Perfil" ColumnName="Perfil" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spMostrarVentaPorId" FunctionName="VentaMusicalModel.Store.spMostrarVentaPorId">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VentaMusicalModel.spMostrarVentaPorId_Result">
-                <ScalarProperty Name="NumeroFactura" ColumnName="NumeroFactura" />
-                <ScalarProperty Name="IDUsuario" ColumnName="IDUsuario" />
-                <ScalarProperty Name="FechaCompra" ColumnName="FechaCompra" />
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="TipoPago" ColumnName="TipoPago" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spMostrarVentas" FunctionName="VentaMusicalModel.Store.spMostrarVentas">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VentaMusicalModel.spMostrarVentas_Result">
-                <ScalarProperty Name="NumeroFactura" ColumnName="NumeroFactura" />
-                <ScalarProperty Name="IDUsuario" ColumnName="IDUsuario" />
-                <ScalarProperty Name="FechaCompra" ColumnName="FechaCompra" />
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="TipoPago" ColumnName="TipoPago" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

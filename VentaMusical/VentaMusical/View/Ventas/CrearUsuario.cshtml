@@ -1,0 +1,90 @@
+﻿@model VentaMusical.Models.ViewModels.Usuarios.Usuario
+
+@{
+    ViewBag.Title = "Crear Usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Agregar Usuario</h2>
+<br />
+
+<div id="resultadoMensaje"></div>
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "formCrearUsuario", onsubmit = "return false;" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-4">
+            <button class="btn btn-success w-100 btn-lg" onclick="enviarFormulario()">Guardar Usuario</button>
+            <br /><br />
+            <input type="button" class="btn btn-outline-success w-100 btn-lg" value="Volver"
+                   onclick="document.location.href='@Url.Content("~/Usuarios/Index")'" />
+        </div>
+
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.NumeroIdentificacion)
+            @Html.TextBoxFor(m => m.NumeroIdentificacion, new { @class = "form-control" })
+            <br />
+
+            @Html.LabelFor(m => m.Nombre)
+            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+            <br />
+
+            @Html.LabelFor(m => m.Apellido)
+            @Html.TextBoxFor(m => m.Apellido, new { @class = "form-control" })
+            <br />
+
+            @Html.LabelFor(m => m.Genero)
+            @Html.DropDownListFor(m => m.Genero, new List<SelectListItem>
+        {
+                new SelectListItem { Text = "Masculino", Value = "Masculino" },
+                new SelectListItem { Text = "Femenino", Value = "Femenino" },
+                new SelectListItem { Text = "Otro", Value = "Otro" }
+            }, new { @class = "form-select" })
+            <br />
+
+            @Html.LabelFor(m => m.Correo)
+            @Html.TextBoxFor(m => m.Correo, new { @class = "form-control" })
+            <br />
+
+            @Html.LabelFor(m => m.TipoTarjeta)
+            @Html.DropDownListFor(m => m.TipoTarjeta, new List<SelectListItem>
+        {
+                new SelectListItem { Text = "VISA", Value = "VISA" },
+                new SelectListItem { Text = "MASTERCARD", Value = "MASTERCARD" },
+                new SelectListItem { Text = "AMERICAN EXPRESS", Value = "AMERICAN EXPRESS" }
+            }, new { @class = "form-select" })
+            <br />
+
+            @Html.LabelFor(m => m.NumeroTarjeta)
+            @Html.TextBoxFor(m => m.NumeroTarjeta, new { @class = "form-control" })
+            <br />
+
+            @Html.LabelFor(m => m.Contrasena)
+            @Html.PasswordFor(m => m.Contrasena, new { @class = "form-control" })
+            <br />
+
+            @Html.HiddenFor(m => m.DineroDisponible)
+            @Html.HiddenFor(m => m.Perfil)
+        </div>
+    </div>
+}
+
+@section scripts {
+    <script>
+        function enviarFormulario() {
+            var datos = $("#formCrearUsuario").serialize();
+            $.post('@Url.Action("CrearUsuario", "Usuarios")', datos, function (result) {
+                let mensaje = result.success
+                    ? `<div class='alert alert-success'>Usuario creado: ${result.usuario.Nombre}</div>`
+                    : `<div class='alert alert-danger'>${result.message}</div>`;
+
+                $("#resultadoMensaje").html(mensaje);
+                if (result.success) {
+                    $("#formCrearUsuario")[0].reset();
+                }
+            });
+        }
+    </script>
+}

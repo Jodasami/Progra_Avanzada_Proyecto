@@ -1,0 +1,108 @@
+﻿@model VentaMusical.Models.ViewModels.Ventas.ProcesarVenta
+
+@{
+    ViewBag.Title = "Procesar Factura";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Revisión de Factura</h2>
+<br />
+
+@if (!Model.CarritoItems.Any())
+{
+    <div class="alert alert-warning">Tu carrito está vacío.</div>
+}
+else
+{
+    @Html.HiddenFor(m => m.IDUsuario)
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-success">
+            <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CarritoItems)
+            {
+                <tr>
+                    <td>@item.NombreCancion</td>
+                    <td>₡@item.PrecioUnitario.ToString("N2")</td>
+                    <td>@item.Cantidad</td>
+                    <td>₡@(item.PrecioUnitario * item.Cantidad).ToString("N2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Datos de pago</h5>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.TipoPago)
+                @Html.DropDownListFor(m => m.TipoPago, Model.ListaTipoPago, new { @class = "form-select", id = "TipoPago" })
+                @Html.ValidationMessageFor(m => m.TipoPago)
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.DetallePago)
+                @Html.TextBoxFor(m => m.DetallePago, new { @class = "form-control", id = "DetallePago" })
+                @Html.ValidationMessageFor(m => m.DetallePago)
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.CodigoTarjeta)
+                @Html.TextBoxFor(m => m.CodigoTarjeta, new { @class = "form-control", id = "CodigoTarjeta" })
+                @Html.ValidationMessageFor(m => m.CodigoTarjeta)
+            </div>
+
+            <button type="button" class="btn btn-success w-100 btn-lg" onclick="confirmarVenta()">Confirmar Venta</button>
+        </div>
+
+        <div class="col-md-6">
+            <h5>Resumen</h5>
+            <p>Subtotal: ₡@Model.Subtotal.ToString("N2")</p>
+            <p>IVA (13%): ₡@Model.IVA.ToString("N2")</p>
+            @if (Model.ComisionTarjeta > 0)
+            {
+                <p>Comisión por tarjeta: ₡@Model.ComisionTarjeta.ToString("N2")</p>
+            }
+            <p><strong>Total: ₡@Model.Total.ToString("N2")</strong></p>
+        </div>
+    </div>
+
+    <div id="resultadoFactura" class="mt-4"></div>
+}
+
+@section scripts {
+    <script>
+        function confirmarVenta() {
+            const datos = {
+                idUsuario: $("#IDUsuario").val(),
+                tipoPago: $("#TipoPago").val(),
+                detallePago: $("#DetallePago").val(),
+                codigoTarjeta: $("#CodigoTarjeta").val()
+            };
+
+            $.post('@Url.Action("ProcesarFactura", "Ventas")', datos, function (res) {
+                if (res.success) {
+                    const mensaje = `
+                        <div class="alert alert-success">
+                            <strong>Venta procesada.</strong> Factura #${res.numeroFactura} generada correctamente.
+                            <br />Se envió una copia al correo del cliente.
+                            <br /><br />
+                            <a class="btn btn-outline-success" href='@Url.Action("Index", "Ventas")'>Volver al historial</a>
+                        </div>`;
+                    $("#resultadoFactura").html(mensaje);
+                    $(".btn-success").prop("disabled", true);
+                } else {
+                    $("#resultadoFactura").html(`<div class="alert alert-danger">${res.message}</div>`);
+                }
+            });
+        }
+    </script>
+}

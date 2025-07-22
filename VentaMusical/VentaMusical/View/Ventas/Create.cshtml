@@ -1,0 +1,56 @@
+﻿@model VentaMusical.Models.ViewModels.Ventas.CrearVenta
+
+
+@{
+    ViewBag.Title = "Registrar Venta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Registrar Nueva Venta</h2>
+<br />
+<br />
+
+@if (ViewBag.ValorMensaje == 1)
+{
+    <div class="alert alert-success">@ViewBag.MensajeProceso</div>
+}
+else if (ViewBag.ValorMensaje == 0)
+{
+    <div class="alert alert-danger">@ViewBag.MensajeProceso</div>
+}
+
+@using (Html.BeginForm("Create", "Ventas", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-4">
+            <input type="submit" class="btn btn-success w-100 btn-lg" value="Registrar Venta" />
+            <br /><br />
+            <input type="button" class="btn btn-outline-success w-100 btn-lg" value="Volver"
+                   onclick="document.location.href='@Url.Content("~/Ventas/Index")'" />
+        </div>
+
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.IDUsuario)
+            @Html.DropDownListFor(m => m.IDUsuario, Model.ListaUsuarios, new { @class = "form-select" })
+            @Html.ValidationMessageFor(m => m.IDUsuario)
+            <br />
+
+            @Html.LabelFor(m => m.TipoPago)
+            @Html.DropDownListFor(m => m.TipoPago, Model.TipoPago, new { @class = "form-select" })
+            @Html.ValidationMessageFor(m => m.TipoPago)
+            <br />
+
+            @Html.LabelFor(m => m.DetallePago)
+            @Html.TextBoxFor(m => m.DetallePago, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.DetallePago)
+            <br />
+
+            @Html.LabelFor(m => m.MontoAFavor)
+            @Html.TextBoxFor(m => m.MontoAFavor, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.MontoAFavor)
+            <br />
+        </div>
+    </div>
+}
