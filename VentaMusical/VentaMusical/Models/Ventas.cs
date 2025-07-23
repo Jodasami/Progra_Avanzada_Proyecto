@@ -24,6 +24,15 @@ namespace VentaMusical.Models
         public System.DateTime FechaCompra { get; set; }
         public decimal Total { get; set; }
         public string TipoPago { get; set; }
+        public decimal TotalSinIVA { get; set; }
+        public decimal IVA { get; set; }
+        public decimal RecargoTarjeta { get; set; }
+        public decimal TotalFinal { get; set; }
+        public string CodigoTarjeta { get; set; }
+        public Nullable<decimal> MontoCreditoUsado { get; set; }
+        public Nullable<decimal> MontoRestante { get; set; }
+        public string Estado { get; set; }
+        public Nullable<bool> EnviadaPorCorreo { get; set; }
     
         public virtual ICollection<DetalleVenta> DetalleVenta { get; set; }
         public virtual Usuarios Usuarios { get; set; }

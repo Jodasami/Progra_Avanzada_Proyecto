@@ -26,6 +26,10 @@ CREATE TABLE Generos(
 );
 GO
 
+SELECT name, type_desc
+FROM sys.triggers
+WHERE parent_id = OBJECT_ID('Generos');
+
 CREATE TABLE Artistas(
 	CodigoArtista		INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	NombreArtistico		VARCHAR(100)NOT NULL,
@@ -63,22 +67,40 @@ GO
 CREATE TABLE Ventas(
     NumeroFactura     INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
     IDUsuario         INT NOT NULL,
+	IVA                 DECIMAL(10,2) NOT NULL,       
+	RecargoTarjeta      DECIMAL(10,2) NOT NULL,      
+	TotalFinal          DECIMAL(10,2) NOT NULL,       
+    CodigoTarjeta       VARCHAR(4),                   
+    MontoCreditoUsado   DECIMAL(10,2) DEFAULT 0,      
+    MontoRestante       DECIMAL(10,2) DEFAULT 0,      
+    Estado              NVARCHAR(20) DEFAULT 'Completada', 
+    EnviadaPorCorreo    BIT DEFAULT 0   ,
     FechaCompra       DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     Total             DECIMAL(10,2) NOT NULL,
     TipoPago          NVARCHAR(25)  NOT NULL,
     FOREIGN KEY (IDUsuario) REFERENCES Usuarios(ID) ON DELETE NO ACTION
 );
+
+
 GO
 
 CREATE TABLE DetalleVenta(
 	IDDetalle		INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	NumeroFactura	INT NOT NULL,
 	CodigoCancion	INT NOT NULL,
+	NombreCancion    VARCHAR(150) NOT NULL,
+   PrecioUnitario   DECIMAL(10,2) NOT NULL,
+   Cantidad         INT NOT NULL DEFAULT 1,
 	Subtotal		DECIMAL(10,2) NOT NULL,
 	FOREIGN KEY (NumeroFactura) REFERENCES Ventas(NumeroFactura),
 	FOREIGN KEY (CodigoCancion) REFERENCES Canciones(CodigoCancion) 
 );
+
+
+
 GO
+
+
 
 CREATE TABLE Auditoria(
 	ID					INT IDENTITY(1,1) PRIMARY KEY NOT NULL,

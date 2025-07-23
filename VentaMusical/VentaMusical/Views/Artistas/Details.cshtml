@@ -1,7 +1,51 @@
-﻿
+﻿@model VentaMusical.Models.ViewModels.Artistas.Artista
+
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalles del Artista";
 }
 
-<h2>Details</h2>
+<h2>Detalles del Artista</h2>
 
+<div class="form-horizontal">
+    <hr />
+
+    <dl class="dl-horizontal">
+
+        <dt>Código del Artista</dt>
+        <dd>@Html.DisplayFor(model => model.CodigoArtista)</dd>
+
+        <dt>Nombre Artístico</dt>
+        <dd>@Html.DisplayFor(model => model.NombreArtistico)</dd>
+
+        <dt>Nombre Real</dt>
+        <dd>@Html.DisplayFor(model => model.NombreReal)</dd>
+
+        <dt>Fecha de Nacimiento</dt>
+        <dd>@Html.DisplayFor(model => model.FechaNacimiento)</dd>
+
+        <dt>Nacionalidad</dt>
+        <dd>@Html.DisplayFor(model => model.Nacionalidad)</dd>
+
+        <dt>Link de Biografía</dt>
+        <dd>
+            <a href="@Model.LinkBiografia" target="_blank">@Model.LinkBiografia</a>
+        </dd>
+
+        <dt>Foto</dt>
+        <dd>
+            @if (!string.IsNullOrEmpty(Model.Foto))
+            {
+                <img src="@Url.Content(Model.Foto)" alt="Foto del artista" style="max-width:200px;" />
+            }
+            else
+            {
+                <span>No hay imagen</span>
+            }
+        </dd>
+    </dl>
+
+    <div class="form-group">
+        @Html.ActionLink("Editar", "Edit", new { id = Model.CodigoArtista }, new { @class = "btn btn-warning" })
+        @Html.ActionLink("Volver a la lista", "Index", null, new { @class = "btn btn-secondary" })
+    </div>
+</div>

@@ -275,26 +275,25 @@ END;
 
 ----________________________No Exista Duplicados________________________----
 
+
 CREATE TRIGGER trg_PreventDuplicateGenero
 ON Generos
-INSTEAD OF INSERT
+AFTER INSERT
 AS
 BEGIN
     IF EXISTS (
-        SELECT 1
-        FROM inserted i
-        JOIN Generos g ON LOWER(i.Descripcion) = LOWER(g.Descripcion)
+        SELECT LOWER(Descripcion)
+        FROM Generos
+        GROUP BY LOWER(Descripcion)
+        HAVING COUNT(*) > 1
     )
     BEGIN
         RAISERROR('Ya existe un género con esa descripción.', 16, 1);
-        ROLLBACK;
-        RETURN;
+        ROLLBACK TRANSACTION;
     END
-
-    INSERT INTO Generos (Descripcion)
-    SELECT Descripcion
-    FROM inserted;
 END;
+GO
+
 
 ----________________________Eliminar________________________
 

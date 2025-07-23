@@ -12,17 +12,12 @@ namespace VentaMusical.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DetalleVenta
+    public partial class sysdiagrams
     {
-        public int IDDetalle { get; set; }
-        public int NumeroFactura { get; set; }
-        public int CodigoCancion { get; set; }
-        public decimal Subtotal { get; set; }
-        public string NombreCancion { get; set; }
-        public decimal PrecioUnitario { get; set; }
-        public int Cantidad { get; set; }
-    
-        public virtual Canciones Canciones { get; set; }
-        public virtual Ventas Ventas { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

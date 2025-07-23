@@ -1,7 +1,148 @@
-﻿
+﻿@model VentaMusical.Models.ViewModels.Ventas.Venta
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Registrar Nueva Venta";
 }
 
-<h2>Create</h2>
+<h2>Registrar Nueva Venta</h2>
 
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IDUsuario, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("IDUsuario", null, "Seleccione un usuario", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IDUsuario, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <!-- Subtotal -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalSinIVA)
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.TotalSinIVA, new { @class = "form-control", type = "number", step = "0.01", placeholder = "Monto sin IVA" })
+            </div>
+        </div>
+        <!-- IVA calcualdo-->
+        <div class="form-group">
+            @Html.LabelFor(model => model.IVA)
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.IVA, new { @class = "form-control bg-light", type = "number", step = "0.01", id = "IVA", placeholder = "IVA (13%)", @readonly = "readonly" })
+            </div>
+        </div>
+        <!--Recargo-->
+        <div class="form-group">
+            @Html.LabelFor(model => model.RecargoTarjeta)
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.RecargoTarjeta, new { @class = "form-control", type = "number", step = "0.01", id = "RecargoTarjeta", placeholder = "Recargo por tarjeta (si aplica)" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalFinal)
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.TotalFinal, new { @class = "form-control bg-light", type = "number", step = "0.01", id = "TotalFinal", placeholder = "Monto total", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalFinal)
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.TotalFinal, new { @class = "form-control", type = "number", step = "0.01", placeholder = "Monto total a pagar" })
+            </div>
+        </div>
+        <!--Otros cargos-->
+        <div class="form-group">
+            @Html.LabelFor(model => model.TipoPago)
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.TipoPago, new SelectList(new[] { "Tarjeta", "PayPal", "Transferencia" }), "Seleccione método de pago", new { @class = "form-control", id = "TipoPago" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CodigoTarjeta)
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.CodigoTarjeta, new { @class = "form-control", maxlength = "4", placeholder = "Últimos 4 dígitos" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MontoCreditoUsado)
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.MontoCreditoUsado, new { @class = "form-control", type = "number", step = "0.01" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MontoRestante)
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.MontoRestante, new { @class = "form-control", type = "number", step = "0.01" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Estado)
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Estado, new SelectList(new[] { "Completada", "Pendiente", "Cancelada" }), "Seleccione estado", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EnviadaPorCorreo)
+            <div class="col-md-10">
+                <label class="checkbox-inline">
+                    @Html.CheckBoxFor(model => model.EnviadaPorCorreo) Enviar por correo
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Registrar Venta" class="btn btn-success" />
+                <a href="@Url.Action("Index", "Ventas")" class="btn btn-default">Cancelar</a>
+            </div>
+        </div>
+
+        @if (ViewBag.MensajeProceso != null)
+        {
+            <div class="alert @(ViewBag.ValorMensaje == 1 ? "alert-success" : "alert-danger")">
+                <i class="glyphicon glyphicon-info-sign"></i> @ViewBag.MensajeProceso
+            </div>
+        }
+    </div>
+}
+<!--Cálculo-->
+
+@section Scripts {
+    <script>
+    function actualizarValores() {
+            const subtotal = parseFloat(document.getElementById("TotalSinIVA").value) || 0;
+            const recargo = parseFloat(document.getElementById("RecargoTarjeta").value) || 0;
+            const iva = +(subtotal * 0.13).toFixed(2);
+            const total = +(subtotal + iva + recargo).toFixed(2);
+
+            document.getElementById("IVA").value = iva;
+            document.getElementById("TotalFinal").value = total;
+        }
+
+        function toggleRecargo() {
+            const tipo = document.getElementById("TipoPago")?.value;
+            const grupo = document.getElementById("RecargoTarjetaGrupo");
+
+            if (tipo === "Tarjeta") {
+                grupo.style.display = "block";
+            } else {
+                grupo.style.display = "none";
+                document.getElementById("RecargoTarjeta").value = "0";
+                actualizarValores();
+            }
+        }
+
+        document.getElementById("TotalSinIVA").addEventListener("input", actualizarValores);
+        document.getElementById("RecargoTarjeta").addEventListener("input", actualizarValores);
+        document.getElementById("TipoPago").addEventListener("change", toggleRecargo);
+
+    // Inicializar
+    document.addEventListener("DOMContentLoaded", toggleRecargo);
+    </script>
+}

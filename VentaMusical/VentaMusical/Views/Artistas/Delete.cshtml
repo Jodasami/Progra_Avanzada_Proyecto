@@ -1,7 +1,53 @@
-﻿
+﻿@model VentaMusical.Models.ViewModels.Artistas.Artista
+
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Eliminar Artista";
 }
 
-<h2>Delete</h2>
+<h2>Eliminar Artista</h2>
 
+<h3>¿Estás seguro de que deseas eliminar este artista?</h3>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.CodigoArtista)</dt>
+        <dd>@Html.DisplayFor(model => model.CodigoArtista)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.NombreArtistico)</dt>
+        <dd>@Html.DisplayFor(model => model.NombreArtistico)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.NombreReal)</dt>
+        <dd>@Html.DisplayFor(model => model.NombreReal)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.FechaNacimiento)</dt>
+        <dd>@Html.DisplayFor(model => model.FechaNacimiento)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.Nacionalidad)</dt>
+        <dd>@Html.DisplayFor(model => model.Nacionalidad)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.LinkBiografia)</dt>
+        <dd>@Html.DisplayFor(model => model.LinkBiografia)</dd>
+
+        <dt>Foto</dt>
+        <dd>
+            @if (!string.IsNullOrEmpty(Model.Foto))
+            {
+                <img src="@Url.Content("~/Uploads/" + Model.Foto)" width="150" />
+            }
+            else
+            {
+                <span>Sin imagen</span>
+            }
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+            @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>

@@ -1,7 +1,21 @@
-﻿
+﻿@model VentaMusical.Models.ViewModels.Ventas.Venta
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalle de Factura";
 }
 
-<h2>Details</h2>
+<h2>Detalle de Factura @Model.NumeroFactura</h2>
+<table class="table table-bordered">
+    <tr><th>Usuario</th><td>@Model.IDUsuario</td></tr>
+    <tr><th>Fecha</th><td>@Model.FechaCompra.ToString("dd/MM/yyyy HH:mm")</td></tr>
+    <tr><th>Subtotal</th><td>₡@Model.TotalSinIVA.ToString("N2")</td></tr>
+    <tr><th>IVA</th><td>₡@Model.IVA.ToString("N2")</td></tr>
+    <tr><th>Recargo Tarjeta</th><td>₡@Model.RecargoTarjeta.ToString("N2")</td></tr>
+    <tr><th>Total</th><td>₡@Model.TotalFinal.ToString("N2")</td></tr>
+    <tr><th>Pago</th><td>@Model.TipoPago</td></tr>
+    <tr><th>Crédito usado</th><td>₡@Model.MontoCreditoUsado.ToString("N2")</td></tr>
+    <tr><th>Crédito restante</th><td>₡@Model.MontoRestante.ToString("N2")</td></tr>
+    <tr><th>Estado</th><td>@Model.Estado</td></tr>
+    <tr><th>Enviada por correo</th><td>@(Model.EnviadaPorCorreo ? "Sí" : "No")</td></tr>
+</table>
 
+<a href="@Url.Action("Index", "Ventas")" class="btn btn-default">Volver</a>

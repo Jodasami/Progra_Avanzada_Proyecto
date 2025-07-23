@@ -1,7 +1,24 @@
 ﻿
+@model VentaMusical.Models.ViewModels.Generos.Genero
+
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalles del Género";
 }
 
-<h2>Details</h2>
+<h2>Detalles del Género</h2>
 
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Código</dt>
+        <dd>@Html.DisplayFor(model => model.CodigoGenero)</dd>
+
+        <dt>Descripción</dt>
+        <dd>@Html.DisplayFor(model => model.Descripcion)</dd>
+    </dl>
+</div>
+
+<p>
+    <a href="@Url.Action("Edit", new { id = Model.CodigoGenero })" class="btn btn-warning">Editar</a>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Volver a la lista</a>
+</p>
