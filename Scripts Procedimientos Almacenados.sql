@@ -7,87 +7,100 @@ USE VentaMusical;
 /*--------------------------------------------------------------------*/
 
 ---- ________________________Insertar Album________________________----
+IF OBJECT_ID('spInsertarAlbum', 'P') IS NOT NULL
+    DROP PROCEDURE spInsertarAlbum;
+GO
+
 CREATE PROCEDURE spInsertarAlbum
     @CodigoArtista  INT,
     @NombreAlbum    VARCHAR(150),
     @AnoLanzamiento INT,
-    @Imagen         VARCHAR(150)
+    @Imagen         VARCHAR(MAX)
 AS
 BEGIN
-    
+    SET NOCOUNT ON;
+
     IF NOT EXISTS (SELECT 1 FROM Artistas WHERE CodigoArtista = @CodigoArtista)
     BEGIN
-        
         RAISERROR('Error: El artista con el código especificado no existe.', 16, 1);
         RETURN;
     END
 
     BEGIN TRY
-        BEGIN TRANSACTION;
-
         INSERT INTO Albumes (CodigoArtista, NombreAlbum, AnoLanzamiento, Imagen)
         VALUES (@CodigoArtista, @NombreAlbum, @AnoLanzamiento, @Imagen);
-        
-        COMMIT;
     END TRY
     BEGIN CATCH
-        ROLLBACK;
         THROW;
     END CATCH
 END
 GO
 
 ---- ________________________Actualizar Album________________________----
+IF OBJECT_ID('spActualizarAlbum', 'P') IS NOT NULL
+    DROP PROCEDURE spActualizarAlbum;
+GO
+
 CREATE PROCEDURE spActualizarAlbum
     @CodigoAlbum    INT,
     @CodigoArtista  INT,
     @NombreAlbum    VARCHAR(150),
     @AnoLanzamiento INT,
-    @Imagen         VARCHAR(150)
+    @Imagen         VARCHAR(MAX)
 AS
 BEGIN
+    SET NOCOUNT ON;
+
     IF NOT EXISTS (SELECT 1 FROM Artistas WHERE CodigoArtista = @CodigoArtista)
     BEGIN
         RAISERROR('Error: El artista con el código especificado no existe.', 16, 1);
         RETURN;
     END
 
-    BEGIN TRY
-        BEGIN TRANSACTION;
+    IF NOT EXISTS (SELECT 1 FROM Albumes WHERE CodigoAlbum = @CodigoAlbum)
+    BEGIN
+        RAISERROR('Error: El álbum que intenta actualizar no existe.', 16, 1);
+        RETURN;
+    END
 
+    BEGIN TRY
         UPDATE Albumes
-        SET
-            CodigoArtista = @CodigoArtista,
+        SET CodigoArtista = @CodigoArtista,
             NombreAlbum = @NombreAlbum,
             AnoLanzamiento = @AnoLanzamiento,
             Imagen = @Imagen
-        WHERE
-            CodigoAlbum = @CodigoAlbum;
-
-        COMMIT;
+        WHERE CodigoAlbum = @CodigoAlbum;
     END TRY
     BEGIN CATCH
-        ROLLBACK;
         THROW;
     END CATCH
 END
 GO
 
 ---- ________________________Eliminar Album________________________----
+IF OBJECT_ID('spEliminarAlbum', 'P') IS NOT NULL
+    DROP PROCEDURE spEliminarAlbum;
+GO
+
 CREATE PROCEDURE spEliminarAlbum
     @CodigoAlbum INT
 AS
 BEGIN
-    
-   DELETE FROM Albumes
+    SET NOCOUNT ON;
+    DELETE FROM Albumes
     WHERE CodigoAlbum = @CodigoAlbum;
 END
 GO
 
 ---- ________________________Listar todos los Albumes________________________----
+IF OBJECT_ID('spListarAlbumes', 'P') IS NOT NULL
+    DROP PROCEDURE spListarAlbumes;
+GO
+
 CREATE PROCEDURE spListarAlbumes
 AS
 BEGIN
+    SET NOCOUNT ON;
     SELECT CodigoAlbum, CodigoArtista, NombreAlbum, AnoLanzamiento, Imagen
     FROM Albumes
     ORDER BY NombreAlbum;
@@ -95,15 +108,21 @@ END
 GO
 
 ---- ________________________Listar Album por ID________________________----
+IF OBJECT_ID('spListarAlbumPorID', 'P') IS NOT NULL
+    DROP PROCEDURE spListarAlbumPorID;
+GO
+
 CREATE PROCEDURE spListarAlbumPorID
     @CodigoAlbum INT
 AS
 BEGIN
+    SET NOCOUNT ON;
     SELECT CodigoAlbum, CodigoArtista, NombreAlbum, AnoLanzamiento, Imagen
     FROM Albumes
     WHERE CodigoAlbum = @CodigoAlbum;
 END
 GO
+
 
 /*--------------------------------------------------------------------*/
 /*------------------------- TABLA DE ARTISTAS -------------------------*/

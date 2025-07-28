@@ -2,8 +2,10 @@
 CREATE DATABASE VentaMusical;
 GO
 
+
 USE VentaMusical;
 GO
+
 
 CREATE TABLE Usuarios(
 	ID						INT IDENTITY(1,1) PRIMARY KEY NOT NULL,

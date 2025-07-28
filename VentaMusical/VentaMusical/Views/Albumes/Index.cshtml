@@ -1,7 +1,48 @@
-﻿
+﻿@model IEnumerable<VentaMusical.Models.Albumes>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Álbumes Disponibles";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
+<hr />
+
+@* FORMULARIO PARA EL FILTRO *@
+@using (Html.BeginForm("Index", "Albumes", FormMethod.Get))
+{
+    <p>
+        <strong>Filtrar por Artista:</strong>
+        @Html.DropDownList("CodigoArtista", (SelectList)ViewBag.ListaDeArtistas, "Todos los artistas", new { @class = "form-control" })
+        <input type="submit" value="Filtrar" class="btn btn-primary" />
+    </p>
+}
+
+<p>
+    @Html.ActionLink("Agregar Nuevo Álbum", "Create", null, new { @class = "btn btn-success" })
+</p>
+
+<table class="table table-striped table-hover">
+    <tr>
+        <th>Portada</th>
+        <th>Nombre del Álbum</th>
+        <th>Artista</th>
+        <th>Año de Lanzamiento</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img src="@Url.Content("~/Content/Imagenes/Albumes/" + item.Imagen)" alt="Portada" width="100" />
+            </td>
+            <td>@Html.DisplayFor(modelItem => item.NombreAlbum)</td>
+            <td>@Html.DisplayFor(modelItem => item.Artistas.NombreArtistico)</td>
+            <td>@Html.DisplayFor(modelItem => item.AnoLanzamiento)</td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.CodigoAlbum }, new { @class = "btn btn-warning btn-sm" })
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.CodigoAlbum }, new { @class = "btn btn-danger btn-sm" })
+            </td>
+        </tr>
+    }
+</table>
