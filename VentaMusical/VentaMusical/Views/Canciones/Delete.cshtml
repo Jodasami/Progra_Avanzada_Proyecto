@@ -1,0 +1,60 @@
+﻿@model VentaMusical.Models.ViewModels.Canciones.Cancion
+
+@{
+    ViewBag.Title = "Eliminar Cancion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Eliminar Cancion</h2>
+<br />
+<br />
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card shadow-sm p-4">
+            <h4 class="text-danger text-center mb-4">¿Estás seguro que deseas eliminar este producto?</h4>
+            <dl class="row">
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CodigoCancion)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.CodigoCancion)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CodigoGenero)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.CodigoGenero)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CodigoAlbum)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.CodigoAlbum)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NombreCancion)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.NombreCancion)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Precio)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Precio)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CantidadDisponible)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.CantidadDisponible)</dd>
+            </dl>
+
+            <hr class="my-4" />
+
+            <h5 class="text-center mb-3">Reproducir:</h5>
+            <div class="ratio ratio-16x9 mb-4">
+                <iframe src="@Model.LinkVideo"
+                        title="Muestra de la canción"
+                        frameborder="0"
+                        allowfullscreen
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy">
+                </iframe>
+            </div>
+
+            @using (Html.BeginForm("Delete", "Canciones", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="text-center mt-4">
+                    <input type="submit" value="Eliminar" class="btn btn-danger btn-lg" />
+                    @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-secondary btn-lg" })
+                </div>
+            }
+        </div>
+    </div>
+</div>
