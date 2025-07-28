@@ -1,0 +1,117 @@
+﻿@model IEnumerable<VentaMusical.Models.ViewModels.Canciones.ListarCanciones>
+
+@{
+    ViewBag.Title = "Listado de Canciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Listado de Canciones</h2>
+<br />
+<br />
+
+@if (ViewBag.ValorMensaje == 1)
+{
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            onclick="document.location.href='@Url.Content("~/Canciones/Index")'">
+                        &times;
+                    </button>
+                    <h2 class="modal-title">Mensaje</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success">@ViewBag.MensajeProceso</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal"
+                            onclick="document.location.href='@Url.Content("~/Canciones/Index")'">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else if (ViewBag.ValorMensaje == 0)
+{
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+                    <h2 class="modal-title">Mensaje</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger">@ViewBag.MensajeProceso</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("Index", "Canciones", FormMethod.Get))
+{
+    <div class="row mb-3">
+        <div class="col-md-4 align-self-end text-end">
+            <input type="button" class="btn btn-success w-100" value="Crear nueva canción"
+                   onclick="document.location.href='@Url.Action("Create", "Canciones")'" />
+        </div>
+
+        <div class="col-md-3">
+            <label>Buscar por Nombre:</label>
+            @Html.TextBox("busquedaNombre", Request.QueryString["busquedaNombre"], new { @class = "form-control" })
+        </div>
+
+        <div class="col-md-2 align-self-end">
+            <input type="submit" value="Buscar" class="btn btn-primary w-100" />
+        </div>
+
+    </div>
+}
+
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Cod. Canción</th>
+            <th>Cod. Género</th>
+            <th>Cod. Album</th>
+            <th>Nombre</th>
+            @*<th>Link</th>*@
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CodigoCancion</td>
+                <td>@item.NombreGenero (Cod: @item.CodigoGenero)</td>
+                <td>@item.NombreAlbum (Cod: @item.CodigoAlbum)</td>
+                <td>@item.NombreCancion</td>
+                @*<td>@item.LinkVideo</td>*@
+                <td>@item.Precio</td>
+                <td>@item.CantidadDisponible</td>
+                <td>
+                    <a href="@Url.Action("Edit", new { id = item.CodigoCancion })" class="btn btn-primary btn-sm">Editar</a>
+                    <a href="@Url.Action("Details", new { id = item.CodigoCancion })" class="btn btn-success btn-sm">Detalles</a>
+                    <a href="@Url.Action("Delete", new { id = item.CodigoCancion })" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myModal').modal('show');
+        });
+    </script>
+}

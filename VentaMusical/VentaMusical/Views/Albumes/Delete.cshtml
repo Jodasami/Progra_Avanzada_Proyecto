@@ -1,0 +1,27 @@
+﻿@model VentaMusical.Models.Albumes
+
+@{
+    ViewBag.Title = "Eliminar Álbum";
+}
+
+<h2>Eliminar Álbum</h2>
+<hr />
+<h3>¿Estás seguro de que deseas eliminar este álbum?</h3>
+<div>
+    <h4>@Html.DisplayFor(model => model.NombreAlbum)</h4>
+    <dl class="dl-horizontal">
+        <dt>Artista</dt>
+        <dd>@Html.DisplayFor(model => model.Artistas.NombreArtistico)</dd>
+        <dt>Año</dt>
+        <dd>@Html.DisplayFor(model => model.AnoLanzamiento)</dd>
+    </dl>
+    <hr />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-danger" />
+            @Html.ActionLink("Cancelar y volver a la lista", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>
