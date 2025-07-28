@@ -19,6 +19,7 @@
         <AssociationConnector Association="VentaMusicalModel.FK__DetalleVe__Codig__36B12243" ManuallyRouted="false" />
         <AssociationConnector Association="VentaMusicalModel.FK__DetalleVe__Numer__35BCFE0A" ManuallyRouted="false" />
         <AssociationConnector Association="VentaMusicalModel.FK__Ventas__IDUsuari__32E0915F" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="VentaMusicalModel.sysdiagrams" Width="1.5" PointX="8.375" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1,7 +1,55 @@
-﻿
+﻿@model VentaMusical.Models.Artistas
+
+
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Editar Artista";
 }
 
-<h2>Edit</h2>
+<h2>Editar Artista</h2>
 
+@using (Html.BeginForm("Edit", "Artistas", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.CodigoArtista)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.NombreArtistico)
+        @Html.TextBoxFor(model => model.NombreArtistico, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.NombreReal)
+        @Html.TextBoxFor(model => model.NombreReal, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.FechaNacimiento)
+        @Html.TextBoxFor(model => model.FechaNacimiento, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Nacionalidad)
+        @Html.TextBoxFor(model => model.Nacionalidad, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.LinkBiografia)
+        @Html.TextBoxFor(model => model.LinkBiografia, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Foto actual")
+        @if (!string.IsNullOrEmpty(Model.Foto))
+        {
+            <div>
+                <img src="@Url.Content(Model.Foto)" style="width:100px" />
+            </div>
+        }
+        <label for="archivoFoto">Nueva foto (opcional)</label>
+        @Html.LabelFor(model => model.Foto)
+        @Html.TextBoxFor(model => model.Foto, new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    @Html.ActionLink("Volver a la lista", "Index", null, new { @class = "btn btn-secondary" })
+}

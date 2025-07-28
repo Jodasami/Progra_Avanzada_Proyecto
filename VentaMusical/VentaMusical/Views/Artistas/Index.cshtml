@@ -1,7 +1,49 @@
-﻿
+﻿@model IEnumerable<VentaMusical.Models.Artistas>
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Lista de Artistas";
 }
 
-<h2>Index</h2>
+<h2>Lista de Artistas</h2>
 
+<p>
+    @Html.ActionLink("Crear nuevo artista", "Create", null, new { @class = "btn btn-success" })
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            @*<th>Foto</th>*@
+            <th>Nombre Artístico</th>
+            <th>Nombre Real</th>
+            <th>Nacionalidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td>
+                    @if (!string.IsNullOrEmpty(item.Foto))
+                    {
+                        <img src="@Url.Content(item.Foto)" alt="Foto del artista" style="width: 80px; height: auto;" />
+                    }
+                    else
+                    {
+                        <span>Sin imagen</span>
+                    }
+                </td>*@
+                <td>@item.NombreArtistico</td>
+                <td>@item.NombreReal</td>
+                <td>@item.Nacionalidad</td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.CodigoArtista }, new { @class = "btn btn-warning btn-sm" }) |
+                    @Html.ActionLink("Detalles", "Details", new { id = item.CodigoArtista }, new { @class = "btn btn-info btn-sm" }) |
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.CodigoArtista }, new { @class = "btn btn-danger btn-sm" })
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -10,19 +10,13 @@
 namespace VentaMusical.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class DetalleVenta
+    public partial class sp_helpdiagrams_Result
     {
-        public int IDDetalle { get; set; }
-        public int NumeroFactura { get; set; }
-        public int CodigoCancion { get; set; }
-        public decimal Subtotal { get; set; }
-        public string NombreCancion { get; set; }
-        public decimal PrecioUnitario { get; set; }
-        public int Cantidad { get; set; }
-    
-        public virtual Canciones Canciones { get; set; }
-        public virtual Ventas Ventas { get; set; }
+        public string Database { get; set; }
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public string Owner { get; set; }
+        public int OwnerID { get; set; }
     }
 }

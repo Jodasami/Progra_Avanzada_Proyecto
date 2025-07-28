@@ -1,0 +1,58 @@
+﻿@model List<VentaMusical.Models.ViewModels.Carritos.CarritoItem>
+
+@{
+    ViewBag.Title = "Carrito de Compras";
+    decimal subtotal = Model.Sum(i => i.SubTotal);
+    decimal iva = Math.Round(subtotal * 0.13m, 2);
+    decimal recargo = Math.Round(subtotal * 0.02m, 2);
+    decimal total = subtotal + iva + recargo;
+}
+
+<h2 class="text-primary">Carrito de Compras</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning text-center">
+        El carrito está vacío. Agrega canciones para continuar.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Canción</th>
+                <th>Precio Unitario</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.NombreCancion</td>
+                    <td>@item.PrecioUnitario.ToString("C")</td>
+                    <td>@item.Cantidad</td>
+                    <td>@item.SubTotal.ToString("C")</td>
+                    <td>
+                        @Html.ActionLink("Eliminar", "Eliminar", "Carrito", new { codigoCancion = item.CodigoCancion }, new { @class = "btn btn-sm btn-danger" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="text-end">
+        <p><strong>Subtotal:</strong> @subtotal.ToString("C")</p>
+        <p><strong>IVA (13%):</strong> @iva.ToString("C")</p>
+        <p><strong>Recargo por Tarjeta (2%):</strong> @recargo.ToString("C")</p>
+        <p class="fs-5"><strong>Total:</strong> @total.ToString("C")</p>
+
+        <hr />
+
+        @Html.ActionLink("Facturar", "Facturar", "Carrito", new { idUsuario = 1, tipoPago = "tarjeta", codigoTarjeta = "****1234" }, new { @class = "btn btn-success me-2" })
+        @Html.ActionLink("Cancelar Compra", "Cancelar", "Carrito", null, new { @class = "btn btn-secondary" })
+    </div>
+}

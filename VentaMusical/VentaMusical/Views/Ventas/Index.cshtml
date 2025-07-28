@@ -1,7 +1,79 @@
-﻿
+﻿@model List<VentaMusical.Models.ViewModels.Ventas.ListarVentas>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Listado de Ventas";
 }
 
-<h2>Index</h2>
+<h2>Listado de Ventas</h2>
 
+<!-- Filtros superiores -->
+<form method="get" class="form-inline" style="margin-bottom: 20px;">
+    <input type="text" name="busquedaFactura" class="form-control" placeholder="Factura o Cliente" />
+
+    <select name="estado" class="form-control">
+        <option value="">-- Estado --</option>
+        <option>Completada</option>
+        <option>Pendiente</option>
+        <option>Cancelada</option>
+    </select>
+
+    <select name="tipoPago" class="form-control">
+        <option value="">-- Pago --</option>
+        <option>Tarjeta</option>
+        <option>PayPal</option>
+        <option>Transferencia</option>
+    </select>
+
+    <input type="submit" value="Buscar" class="btn btn-primary" />
+</form>
+
+<!--Botón para registrar nueva venta -->
+<a href="@Url.Action("Create", "Ventas")" class="btn btn-success" style="margin-bottom: 15px;">
+    <i class="glyphicon glyphicon-plus"></i> Registrar nueva venta
+</a>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info text-center">
+        No hay ventas registradas actualmente.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Factura</th>
+                <th>Usuario</th>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Pago</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var venta in Model)
+            {
+                <tr class="@(venta.Estado == "Completada" ? "success" : venta.Estado == "Pendiente" ? "warning" : venta.Estado == "Cancelada" ? "danger" : "")">
+                    <td>@venta.NumeroFactura</td>
+                    <td>@venta.NombreUsuario</td>
+                    <td>@venta.FechaCompra.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>₡@venta.TotalFinal.ToString("N2")</td>
+                    <td>@venta.TipoPago</td>
+                    <td>@venta.Estado</td>
+                    <td>
+                        @Html.ActionLink("Detalle", "Details", new { id = venta.NumeroFactura }, new { @class = "btn btn-info btn-sm" })
+                        @Html.ActionLink("Editar", "Edit", new { id = venta.NumeroFactura }, new { @class = "btn btn-warning btn-sm" })
+                        @* @Html.ActionLink("Eliminar", "Delete", new { id = venta.NumeroFactura }, new { @class = "btn btn-danger btn-sm" })*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3"><strong>Total general:</strong></td>
+                <td colspan="4">₡@Model.Sum(v => v.TotalFinal).ToString("N2")</td>
+            </tr>
+        </tfoot>
+    </table>
+}

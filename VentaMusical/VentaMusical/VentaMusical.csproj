@@ -129,6 +129,7 @@
     <Compile Include="Controllers\AlbumesController.cs" />
     <Compile Include="Controllers\ArtistasController.cs" />
     <Compile Include="Controllers\CancionesController.cs" />
+    <Compile Include="Controllers\CarritoController.cs" />
     <Compile Include="Controllers\DetallesVentasController.cs" />
     <Compile Include="Controllers\GenerosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -215,6 +216,15 @@
     <Compile Include="Models\spMostrarVentas_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagrams.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Usuarios.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -234,6 +244,9 @@
     <Compile Include="Models\ViewModels\Canciones\DetallesCancion.cs" />
     <Compile Include="Models\ViewModels\Canciones\EditarCancion.cs" />
     <Compile Include="Models\ViewModels\Canciones\ListarCanciones.cs" />
+    <Compile Include="Models\ViewModels\Carritos\AgregarCancion.cs" />
+    <Compile Include="Models\ViewModels\Carritos\CarritoItem.cs" />
+    <Compile Include="Models\ViewModels\Carritos\VentaResumen.cs" />
     <Compile Include="Models\ViewModels\DetallesVentas\CrearDetalleVenta.cs" />
     <Compile Include="Models\ViewModels\DetallesVentas\DetalleVenta.cs" />
     <Compile Include="Models\ViewModels\DetallesVentas\ListarDetallesVentas.cs" />
@@ -347,6 +360,11 @@
     <Content Include="Views\Usuarios\Create.cshtml" />
     <Content Include="Views\Usuarios\Edit.cshtml" />
     <Content Include="Views\Usuarios\Delete.cshtml" />
+    <Content Include="Views\Ventas\Edit.cshtml" />
+    <Content Include="Views\Carrito\Index.cshtml" />
+    <Content Include="Views\Carrito\Agregar.cshtml" />
+    <Content Include="Views\Carrito\Cancelar.cshtml" />
+    <Content Include="Views\Carrito\Confirmar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
