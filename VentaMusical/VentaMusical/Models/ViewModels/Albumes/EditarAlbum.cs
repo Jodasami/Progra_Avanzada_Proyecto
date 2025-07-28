@@ -1,3 +1,4 @@
+
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace VentaMusical.Models.ViewModels.Albumes
@@ -22,4 +23,5 @@ namespace VentaMusical.Models.ViewModels.Albumes
         // Para mostrar la imagen actual en el formulario de edición
         public string ImagenExistente { get; set; }
     }
+
 }

@@ -1,3 +1,4 @@
+
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace VentaMusical.Models.ViewModels.Albumes
@@ -16,4 +17,5 @@ namespace VentaMusical.Models.ViewModels.Albumes
         [Display(Name = "Artista")]
         public int CodigoArtista { get; set; }
     }
+
 }

@@ -7,6 +7,7 @@ USE VentaMusical;
 /*--------------------------------------------------------------------*/
 
 ---- ________________________Insertar Album________________________----
+
 IF OBJECT_ID('spInsertarAlbum', 'P') IS NOT NULL
     DROP PROCEDURE spInsertarAlbum;
 GO
@@ -15,6 +16,7 @@ CREATE PROCEDURE spInsertarAlbum
     @CodigoArtista  INT,
     @NombreAlbum    VARCHAR(150),
     @AnoLanzamiento INT,
+
     @Imagen         VARCHAR(MAX)
 AS
 BEGIN
@@ -22,44 +24,52 @@ BEGIN
 
     IF NOT EXISTS (SELECT 1 FROM Artistas WHERE CodigoArtista = @CodigoArtista)
     BEGIN
-        RAISERROR('Error: El artista con el código especificado no existe.', 16, 1);
+
+        RAISERROR('Error: El artista con el cÃ³digo especificado no existe.', 16, 1);
         RETURN;
     END
 
     BEGIN TRY
+
         INSERT INTO Albumes (CodigoArtista, NombreAlbum, AnoLanzamiento, Imagen)
         VALUES (@CodigoArtista, @NombreAlbum, @AnoLanzamiento, @Imagen);
     END TRY
     BEGIN CATCH
+
         THROW;
     END CATCH
 END
 GO
 
 ---- ________________________Actualizar Album________________________----
+
 IF OBJECT_ID('spActualizarAlbum', 'P') IS NOT NULL
     DROP PROCEDURE spActualizarAlbum;
 GO
+
 
 CREATE PROCEDURE spActualizarAlbum
     @CodigoAlbum    INT,
     @CodigoArtista  INT,
     @NombreAlbum    VARCHAR(150),
     @AnoLanzamiento INT,
+
     @Imagen         VARCHAR(MAX)
 AS
 BEGIN
     SET NOCOUNT ON;
 
+
     IF NOT EXISTS (SELECT 1 FROM Artistas WHERE CodigoArtista = @CodigoArtista)
     BEGIN
-        RAISERROR('Error: El artista con el código especificado no existe.', 16, 1);
+        RAISERROR('Error: El artista con el cÃ³digo especificado no existe.', 16, 1);
         RETURN;
     END
 
+
     IF NOT EXISTS (SELECT 1 FROM Albumes WHERE CodigoAlbum = @CodigoAlbum)
     BEGIN
-        RAISERROR('Error: El álbum que intenta actualizar no existe.', 16, 1);
+        RAISERROR('Error: El Ã¡lbum que intenta actualizar no existe.', 16, 1);
         RETURN;
     END
 
@@ -72,27 +82,33 @@ BEGIN
         WHERE CodigoAlbum = @CodigoAlbum;
     END TRY
     BEGIN CATCH
+
         THROW;
     END CATCH
 END
 GO
 
 ---- ________________________Eliminar Album________________________----
+
 IF OBJECT_ID('spEliminarAlbum', 'P') IS NOT NULL
     DROP PROCEDURE spEliminarAlbum;
 GO
+
 
 CREATE PROCEDURE spEliminarAlbum
     @CodigoAlbum INT
 AS
 BEGIN
+
     SET NOCOUNT ON;
     DELETE FROM Albumes
+
     WHERE CodigoAlbum = @CodigoAlbum;
 END
 GO
 
 ---- ________________________Listar todos los Albumes________________________----
+
 IF OBJECT_ID('spListarAlbumes', 'P') IS NOT NULL
     DROP PROCEDURE spListarAlbumes;
 GO
@@ -101,6 +117,7 @@ CREATE PROCEDURE spListarAlbumes
 AS
 BEGIN
     SET NOCOUNT ON;
+
     SELECT CodigoAlbum, CodigoArtista, NombreAlbum, AnoLanzamiento, Imagen
     FROM Albumes
     ORDER BY NombreAlbum;
@@ -108,6 +125,7 @@ END
 GO
 
 ---- ________________________Listar Album por ID________________________----
+
 IF OBJECT_ID('spListarAlbumPorID', 'P') IS NOT NULL
     DROP PROCEDURE spListarAlbumPorID;
 GO
@@ -116,7 +134,9 @@ CREATE PROCEDURE spListarAlbumPorID
     @CodigoAlbum INT
 AS
 BEGIN
+
     SET NOCOUNT ON;
+
     SELECT CodigoAlbum, CodigoArtista, NombreAlbum, AnoLanzamiento, Imagen
     FROM Albumes
     WHERE CodigoAlbum = @CodigoAlbum;
@@ -253,7 +273,7 @@ BEGIN
             @ErrorMessage = ERROR_MESSAGE(),
             @ErrorSeverity = ERROR_SEVERITY(),
             @ErrorState = ERROR_STATE();
-        RAISERROR('Error al agregar la canción: %s', @ErrorSeverity, @ErrorState, @ErrorMessage);
+        RAISERROR('Error al agregar la canciÃ³n: %s', @ErrorSeverity, @ErrorState, @ErrorMessage);
     END CATCH
 END
 
@@ -291,7 +311,7 @@ BEGIN
             @ErrorMessage = ERROR_MESSAGE(),
             @ErrorSeverity = ERROR_SEVERITY(),
             @ErrorState = ERROR_STATE();
-        RAISERROR('Error al actualizar la canción: %s', @ErrorSeverity, @ErrorState, @ErrorMessage);
+        RAISERROR('Error al actualizar la canciÃ³n: %s', @ErrorSeverity, @ErrorState, @ErrorMessage);
     END CATCH
 END
 
@@ -425,7 +445,7 @@ BEGIN
     END
     ELSE
     BEGIN
-        PRINT 'Error: Factura o Canción no existente';
+        PRINT 'Error: Factura o CanciÃ³n no existente';
     END
 END;
 
@@ -454,7 +474,7 @@ BEGIN
     END
     ELSE
     BEGIN
-        PRINT 'No se encontró el detalle de venta con ese ID.';
+        PRINT 'No se encontrÃ³ el detalle de venta con ese ID.';
     END
 END;
 
@@ -478,7 +498,7 @@ BEGIN
     END
     ELSE
     BEGIN
-        PRINT 'No se encontró el detalle de venta con ese ID.';
+        PRINT 'No se encontrÃ³ el detalle de venta con ese ID.';
     END
 END;
 
@@ -514,7 +534,7 @@ BEGIN
     END
     ELSE
     BEGIN
-        PRINT 'El género ya existe.';
+        PRINT 'El gÃ©nero ya existe.';
     END
 END;
 

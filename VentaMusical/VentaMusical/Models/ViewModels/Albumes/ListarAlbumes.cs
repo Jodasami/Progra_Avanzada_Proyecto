@@ -1,3 +1,4 @@
+
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace VentaMusical.Models.ViewModels.Albumes
@@ -18,4 +19,5 @@ namespace VentaMusical.Models.ViewModels.Albumes
         [Display(Name = "Portada")]
         public string ImagenRuta { get; set; }
     }
+
 }

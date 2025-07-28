@@ -1,3 +1,4 @@
+
 ﻿using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -6,11 +7,18 @@ using System.Web;
 using System.Web.Mvc;
 using VentaMusical.Models;
 using VentaMusical.Models.ViewModels.Albumes;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
 
 namespace VentaMusical.Controllers
 {
     public class AlbumesController : Controller
     {
+
         // 1. Instancia del contexto de la base de datos
         private VentaMusicalEntities db = new VentaMusicalEntities();
 
@@ -178,3 +186,4 @@ namespace VentaMusical.Controllers
         }
     }
 }
+

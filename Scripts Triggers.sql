@@ -8,6 +8,7 @@ USE VentaMusical;
 
 
 -- ________________________Insert________________________----
+
 IF OBJECT_ID('tr_InsertAlbumes', 'TR') IS NOT NULL
     DROP TRIGGER tr_InsertAlbumes;
 GO
@@ -18,6 +19,7 @@ AFTER INSERT
 AS
 BEGIN
     SET NOCOUNT ON;
+
 
     INSERT INTO Auditoria (
         FechaRegistro,
@@ -34,13 +36,15 @@ BEGIN
         'INSERT',
         'Albumes',
         i.CodigoAlbum,
-        'Nuevo ·lbum insertado: ' + i.NombreAlbum,
+        'Nuevo √°lbum insertado: ' + i.NombreAlbum,
         'N/A'
+
     FROM inserted i;
 END
 GO
 
 -- ________________________Update________________________----
+
 IF OBJECT_ID('tr_UpdateAlbumes', 'TR') IS NOT NULL
     DROP TRIGGER tr_UpdateAlbumes;
 GO
@@ -55,17 +59,20 @@ BEGIN
     INSERT INTO Auditoria (FechaRegistro, Usuario, Accion, TablaAfectada, IDRegistroAfectado, Detalles, IPUsuario)
     SELECT 
         GETDATE(),
+
         SUSER_NAME(),
         'UPDATE',
         'Albumes',
         i.CodigoAlbum,
-        '¡lbum actualizado: ' + i.NombreAlbum,
+        '√Ålbum actualizado: ' + i.NombreAlbum,
         'N/A'
+
     FROM inserted i;
 END
 GO
 
 -- ________________________Delete________________________----
+
 IF OBJECT_ID('tr_DeleteAlbumes', 'TR') IS NOT NULL
     DROP TRIGGER tr_DeleteAlbumes;
 GO
@@ -80,12 +87,14 @@ BEGIN
     INSERT INTO Auditoria (FechaRegistro, Usuario, Accion, TablaAfectada, IDRegistroAfectado, Detalles, IPUsuario)
     SELECT 
         GETDATE(),
+
         SUSER_NAME(), 
         'DELETE',
         'Albumes',
         d.CodigoAlbum,
-        '¡lbum eliminado: ' + d.NombreAlbum,
+        '√Ålbum eliminado: ' + d.NombreAlbum,
         'N/A'
+
     FROM deleted d;
 END
 GO
@@ -104,16 +113,16 @@ BEGIN
     -- Evita que se devuelva el recuento de filas afectadas
     SET NOCOUNT ON;
 
-    -- Inserta el registro de auditorÌa para la nueva inserciÛn
+    -- Inserta el registro de auditor√≠a para la nueva inserci√≥n
     INSERT INTO Auditoria (FechaRegistro, Usuario, Accion, TablaAfectada, IDRegistroAfectado, Detalles, IPUsuario)
     SELECT 
-        GETDATE(),          -- Fecha y hora actual de la operaciÛn
-        i.NombreArtistico,  -- Nombre del artista como 'Usuario' que realiza la acciÛn
-        'INSERT',           -- AcciÛn realizada
+        GETDATE(),          -- Fecha y hora actual de la operaci√≥n
+        i.NombreArtistico,  -- Nombre del artista como 'Usuario' que realiza la acci√≥n
+        'INSERT',           -- Acci√≥n realizada
         'Artistas',         -- Tabla afectada
         i.CodigoArtista,    -- ID del nuevo registro insertado
-        'Nuevo artista insertado: ' + i.NombreArtistico, -- Detalles de la operaciÛn
-        SUSER_NAME()        -- Nombre del usuario de la sesiÛn de SQL Server
+        'Nuevo artista insertado: ' + i.NombreArtistico, -- Detalles de la operaci√≥n
+        SUSER_NAME()        -- Nombre del usuario de la sesi√≥n de SQL Server
 	FROM inserted i;        -- 'inserted' es una tabla virtual que contiene las nuevas filas
 END
 GO
@@ -126,7 +135,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Inserta el registro de auditorÌa para la actualizaciÛn
+    -- Inserta el registro de auditor√≠a para la actualizaci√≥n
     INSERT INTO Auditoria (FechaRegistro, Usuario, Accion, TablaAfectada, IDRegistroAfectado, Detalles, IPUsuario)
     SELECT 
         GETDATE(),
@@ -148,7 +157,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Inserta el registro de auditorÌa para la eliminaciÛn
+    -- Inserta el registro de auditor√≠a para la eliminaci√≥n
     INSERT INTO Auditoria (FechaRegistro, Usuario, Accion, TablaAfectada, IDRegistroAfectado, Detalles, IPUsuario)
     SELECT 
         GETDATE(),
@@ -182,7 +191,7 @@ BEGIN
         'INSERT',
         'Canciones',
         i.CodigoCancion,
-        'CanciÛn agregada',
+        'Canci√≥n agregada',
         'Servidor SQL'
     FROM inserted i;
 END
@@ -204,7 +213,7 @@ BEGIN
         'UPDATE',
         'Canciones',
         i.CodigoCancion,
-        'CanciÛn actualizada',
+        'Canci√≥n actualizada',
         'Servidor SQL'
     FROM inserted i
     JOIN deleted d ON i.CodigoCancion = d.CodigoCancion;
@@ -227,7 +236,7 @@ BEGIN
         'DELETE',
         'Canciones',
         d.CodigoCancion,
-        'CanciÛn eliminada',
+        'Canci√≥n eliminada',
         'Servidor SQL'
     FROM deleted d;
 END
@@ -307,7 +316,7 @@ BEGIN
         JOIN Generos g ON LOWER(i.Descripcion) = LOWER(g.Descripcion)
     )
     BEGIN
-        RAISERROR('Ya existe un gÈnero con esa descripciÛn.', 16, 1);
+        RAISERROR('Ya existe un g√©nero con esa descripci√≥n.', 16, 1);
         ROLLBACK;
         RETURN;
     END
@@ -324,14 +333,14 @@ ON Generos
 INSTEAD OF DELETE
 AS
 BEGIN
-    -- Verificar si hay canciones asociadas al gÈnero que se intenta eliminar
+    -- Verificar si hay canciones asociadas al g√©nero que se intenta eliminar
     IF EXISTS (
         SELECT 1
         FROM deleted d
         JOIN Canciones c ON c.CodigoGenero = d.CodigoGenero
     )
     BEGIN
-        RAISERROR('No se puede eliminar el gÈnero porque est· asociado a una o m·s canciones.', 16, 1);
+        RAISERROR('No se puede eliminar el g√©nero porque est√° asociado a una o m√°s canciones.', 16, 1);
         ROLLBACK;
         RETURN;
     END
