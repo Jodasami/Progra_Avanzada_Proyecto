@@ -221,7 +221,6 @@
     <Compile Include="Models\Ventas.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ViewModels\Albumes\Album.cs" />
     <Compile Include="Models\ViewModels\Albumes\CrearAlbum.cs" />
     <Compile Include="Models\ViewModels\Albumes\EditarAlbum.cs" />
     <Compile Include="Models\ViewModels\Albumes\ListarAlbumes.cs" />
@@ -328,10 +327,8 @@
     <Content Include="Views\Canciones\Edit.cshtml" />
     <Content Include="Views\Canciones\Delete.cshtml" />
     <Content Include="Views\Albumes\Index.cshtml" />
-    <Content Include="Views\Albumes\Details.cshtml" />
     <Content Include="Views\Albumes\Create.cshtml" />
     <Content Include="Views\Albumes\Edit.cshtml" />
-    <Content Include="Views\Albumes\Delete.cshtml" />
     <Content Include="Views\Generos\Index.cshtml" />
     <Content Include="Views\Generos\Details.cshtml" />
     <Content Include="Views\Generos\Create.cshtml" />
@@ -347,6 +344,7 @@
     <Content Include="Views\Usuarios\Create.cshtml" />
     <Content Include="Views\Usuarios\Edit.cshtml" />
     <Content Include="Views\Usuarios\Delete.cshtml" />
+    <Content Include="Views\Albumes\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

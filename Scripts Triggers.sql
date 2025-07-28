@@ -8,6 +8,10 @@ USE VentaMusical;
 
 
 -- ________________________Insert________________________----
+IF OBJECT_ID('tr_InsertAlbumes', 'TR') IS NOT NULL
+    DROP TRIGGER tr_InsertAlbumes;
+GO
+
 CREATE TRIGGER tr_InsertAlbumes
 ON Albumes
 AFTER INSERT
@@ -15,20 +19,32 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    INSERT INTO Auditoria (FechaRegistro, Usuario, Accion, TablaAfectada, IDRegistroAfectado, Detalles, IPUsuario)
+    INSERT INTO Auditoria (
+        FechaRegistro,
+        Usuario, 
+        Accion,
+        TablaAfectada,
+        IDRegistroAfectado,
+        Detalles,
+        IPUsuario 
+    )
     SELECT 
         GETDATE(),
-        i.NombreAlbum,      -- Nombre del álbum como identificador en la auditoría
+        SUSER_NAME(),
         'INSERT',
         'Albumes',
-        i.CodigoAlbum,      -- ID del nuevo álbum
+        i.CodigoAlbum,
         'Nuevo álbum insertado: ' + i.NombreAlbum,
-        SUSER_NAME()
+        'N/A'
     FROM inserted i;
 END
 GO
 
 -- ________________________Update________________________----
+IF OBJECT_ID('tr_UpdateAlbumes', 'TR') IS NOT NULL
+    DROP TRIGGER tr_UpdateAlbumes;
+GO
+
 CREATE TRIGGER tr_UpdateAlbumes
 ON Albumes
 AFTER UPDATE
@@ -39,17 +55,21 @@ BEGIN
     INSERT INTO Auditoria (FechaRegistro, Usuario, Accion, TablaAfectada, IDRegistroAfectado, Detalles, IPUsuario)
     SELECT 
         GETDATE(),
-        i.NombreAlbum,
+        SUSER_NAME(),
         'UPDATE',
         'Albumes',
-        i.CodigoAlbum,      -- ID del álbum actualizado
+        i.CodigoAlbum,
         'Álbum actualizado: ' + i.NombreAlbum,
-        SUSER_NAME()
+        'N/A'
     FROM inserted i;
 END
 GO
 
 -- ________________________Delete________________________----
+IF OBJECT_ID('tr_DeleteAlbumes', 'TR') IS NOT NULL
+    DROP TRIGGER tr_DeleteAlbumes;
+GO
+
 CREATE TRIGGER tr_DeleteAlbumes
 ON Albumes
 AFTER DELETE
@@ -60,15 +80,16 @@ BEGIN
     INSERT INTO Auditoria (FechaRegistro, Usuario, Accion, TablaAfectada, IDRegistroAfectado, Detalles, IPUsuario)
     SELECT 
         GETDATE(),
-        d.NombreAlbum,
+        SUSER_NAME(), 
         'DELETE',
         'Albumes',
-        d.CodigoAlbum,      -- ID del álbum eliminado
+        d.CodigoAlbum,
         'Álbum eliminado: ' + d.NombreAlbum,
-        SUSER_NAME()
+        'N/A'
     FROM deleted d;
 END
 GO
+
 
 /*--------------------------------------------------------------------*/
 /*------------------------- TABLA DE ARTISTAS -------------------------*/
